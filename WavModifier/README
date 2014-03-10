@@ -1,0 +1,5 @@
+You could play songs by selecting them.
+While a song is played the player doesn't respond.
+If recording is taking place then also player doesn't respond.
+You could mix files of same framerate else it will not be played.
+Once the recording starts it stops automatically when there is silence and file is made "record<current_date_and_time>".

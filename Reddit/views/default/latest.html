@@ -1,0 +1,37 @@
+{{extend 'layout.html'}}
+<body>
+	{{for x in catg :}}
+		<button onclick="window.location.href='{{=URL('first_page',args=[x.id])}}'">{{=x.name}}</button>
+	{{pass}}
+	<br/><br/><br/>
+
+	{{if(len(disp)!=0):}}
+		{{for x in disp:}}
+			<div style="font-size:20px;color:grey">{{=x.rating}}&nbsp;&nbsp;&nbsp;
+				<button onclick="window.location.href='{{=URL('like',args=[x.id,x.category_id,0])}}'">Like</button>&nbsp;&nbsp;
+				<button onclick="window.location.href='{{=URL('dislike',args=[x.id,x.category_id,0])}}'">Dislike</button>
+				<button onclick="window.location.href='{{=URL('edit_news',args=[x.id,x.category_id,0])}}'">Edit</button>
+				<button onclick="window.location.href='{{=URL('delete_news',args=[x.id,x.category_id,0])}}'">Delete</button>
+			</div><br/>
+			{{if x.ntype=="Text" :}}
+				<a href="{{=x.url}}" style="font-size:25px;color:brown">{{=x.heading}}</a>
+				<div style="font-size:15px;color:red">{{=x.user_name}}</div>
+				<div style="font-size:13px;color:red">{{=x.pres_time}}</div>
+			{{pass}}
+			{{if x.ntype=="Video" :}}
+				<div style="font-size:25px;color:brown">{{=x.heading}}</div>
+				<div style="font-size:15px;color:red">{{=x.user_name}}</div>
+				<div style="font-size:13px;color:red">{{=x.pres_time}}</div><br/>
+				{{if('youtube' in x.url ):}} 
+					{{query1=x['url'].split('=')}} 
+					{{url ="http://www.youtube.com/embed/"+(str)(query1[1]) }} 
+					<iframe width="500" height="350" src={{=url}}> </iframe><br/><br/>
+				{{pass}}				
+			{{pass}}
+			<br/>
+			<hr/>
+		{{pass}}
+	{{pass}}
+
+	
+</body>		

@@ -1,0 +1,74 @@
+{{extend 'layout.html'}}
+<body>
+	<div style="font-size:55px;color:grey;text-align:center">{{=auth.user.first_name.title()}}</div><br/><br/>
+	<span style="font-size:20px;color:grey">View By Category :</span>&nbsp;&nbsp;&nbsp;
+	{{for x in catg :}}
+	<button onclick="window.location.href='{{=URL('login_normal',args=[x.id])}}'">{{=x.name}}</button>
+	{{pass}}
+	<br/><br/><br/>
+	<div style="font-size:45px;color:blue"><b><u>{{=pres_catg[0].name}}</u></b></div><br/><br/>
+	{{if len(disp)==0 :}}
+		<h2 style="color:grey;text-align:center">No News</h2>
+	{{pass}}
+	{{if(len(disp)!=0):}}
+		{{for x in disp:}}
+			<div style="font-size:20px;color:grey">{{=x.rating}}&nbsp;&nbsp;&nbsp;
+			{{fl=0}}
+			{{for y in has_liked:}}
+				{{if int(y.news_id)==int(x.id) and int(y.rater_id)==int(auth.user_id) and int(y.liked)==1:}}
+					{{fl=1}}
+					{{break}}
+				{{pass}}
+			{{pass}}
+			{{if int(fl)==1:}}
+				<button class="btn btn-primary" onclick="window.location.href='{{=URL('like',args=[x.id,query,0])}}'">Like</button>&nbsp;&nbsp;
+			{{pass}}
+			{{if int(fl)==0:}}
+				<button onclick="window.location.href='{{=URL('like',args=[x.id,query,0])}}'">Like</button>&nbsp;&nbsp;
+			{{pass}}
+			{{fl=0}}
+			{{for y in has_liked:}}
+				{{if int(y.news_id)==int(x.id) and int(y.rater_id)==int(auth.user_id) and int(y.disliked)==1:}}
+					{{fl=1}}
+					{{break}}
+				{{pass}}
+			{{pass}}
+			{{if int(fl)==1:}}
+				<button class="btn btn-danger" onclick="window.location.href='{{=URL('dislike',args=[x.id,query,0])}}'">Dislike</button>
+			{{pass}}
+			{{if int(fl)==0:}}
+				<button onclick="window.location.href='{{=URL('dislike',args=[x.id,query,0])}}'">Dislike</button>
+			{{pass}}
+				<button onclick="window.location.href='{{=URL('edit_news',args=[x.id,query,1])}}'">Edit</button>
+				<button onclick="window.location.href='{{=URL('delete_news',args=[x.id,query,1])}}'">Delete</button>
+			</div><br/>
+			{{if x.ntype=="Text" :}}
+				<a href="{{=x.url}}" style="font-size:25px;color:brown">{{=x.heading}}</a>
+				<div style="font-size:13px;color:red">{{=x.pres_time}}</div>
+			{{pass}}
+			{{if x.ntype=="Video" :}}
+				<div style="font-size:25px;color:brown">{{=x.heading}}</div>
+				<div style="font-size:13px;color:red">{{=x.pres_time}}</div><br/>
+				{{if('youtube' in x.url ):}} 
+					{{query1=x['url'].split('=')}} 
+					{{url ="http://www.youtube.com/embed/"+(str)(query1[1]) }} 
+					<iframe width="500" height="350" src={{=url}}> </iframe><br/><br/>
+				{{pass}}				
+			{{pass}}
+			<br/>
+			<hr/>
+			{{for y in q_comment:}}
+				{{if int(y.news_id)==int(x.id):}}
+					<div style="font-size:20px;color:grey;text-align:right">{{=y.body}}</div>
+					<div style="font-size:13px;color:red;text-align:right">{{=y.comm_time}}</div>
+				{{pass}}
+			{{pass}}	
+			<button onclick="window.location.href='{{=URL('insert_comment',args=[x.id,query,1])}}'">Add Comment</button>
+			<hr/>
+			<hr/>
+		{{pass}}
+	{{pass}}
+
+	<button onclick="window.location.href='{{=URL('add_news',args=[query,1])}}'">Add News</button>
+	
+</body>		

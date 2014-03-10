@@ -1,0 +1,158 @@
+# -*- coding: utf-8 -*-
+# this file is released under public domain and you can use without limitations
+
+#########################################################################
+## This is a samples controller
+## - index is the default action of any application
+## - user is required for authentication and authorization
+## - download is for downloading files uploaded in the db (does streaming)
+## - call exposes all registered services (none by default)
+#########################################################################
+
+def index():
+    """
+    example action using the internationalization operator T and flash
+    rendered by views/default/index.html or views/generic.html
+
+    if you need a simple wiki simple replace the two lines below with:
+    return auth.wiki()
+    """
+    redirect(URL(r=request,f='first_page?query=new'))
+
+@auth.requires_login()
+def login_to_account():
+	ar=db((db.auth_membership.user_id==auth.user_id) & (db.auth_group.id==db.auth_membership.group_id)).select(db.auth_group.role)
+	if(len(ar)==0):
+		redirect(URL(r=request,f='user'))
+	elif(len(ar)==1):
+		x=db(db.auth_group.role=='normal').select(db.auth_group.id)
+		db.auth_membership.insert(user_id=auth.user_id,group_id=x[0]['id'])
+		redirect(URL(r=request,f='login_normal'))
+	elif(ar[1]['role']=='normal'):
+		redirect(URL(r=request,f='login_normal'))
+	elif(ar[1]['role']=='admin'):
+		redirect(URL(r=request,f='login_admin'))
+
+def login_normal():
+	disp=db(db.news.user_id==auth.user_id).select(db.news.heading,db.news.url,db.news.category,db.news.ntype)
+	return dict(disp=disp)	
+
+def first_page():
+	query=int(request.args(0))
+	disp=db(db.news.category_id==query).select(db.news.heading,db.news.url,db.news.rating,db.news.ntype,db.news.id)
+	q_comments=db((db.news.category_id==query) & (db.comments.news_id==db.news.id)).select(db.comments.body,db.comments.commentor)
+	catg=db(db.category.id>0).select(db.category.name,db.category.id)
+
+	form=SQLFORM.factory(
+	 db.Field('comm_body','string',label=""),
+	 formstyle='divs',
+	 buttons=[],)
+   	form[0].insert(1,DIV(INPUT(_type='submit',_value='Post')))
+   	if form.accepts(request.vars,session):
+        	 insert_comment(form.vars.comm_body,auth.user_id)
+    	elif form.errors:
+        	 response.flash='Some Error Occured Please Refresh'
+    	
+	return dict(query=query,disp=disp,q_comment=q_comment,catg=catg)
+
+@auth.requires_login()
+def add_news():
+	catg=int(request.args(0))
+	db.news.category_id.default=catg
+	db.news.category.readable=False
+	db.news.category.writable=False
+	db.news.user_id.default=auth.user_id
+	db.news.user_id.writable=False
+	db.news.user_id.readable=False
+	db.news.rating.default=100
+	db.news.rating.writable=False
+	db.news.rating.readable=False
+	form=SQLFORM(db.institution,submit_button="Post",labels={'ntype':'Post Type'})
+	if form.process().accepted:
+		redirect(URL(r=request,f='first_page?query=%s' % catg))
+	elif form.errors:
+		response.flash="Error posting it"
+	return dict(form=form)
+
+@auth.requires_login()
+def like():
+	news_id=int(request.args(0))
+	catg=int(request.args(1))
+	ar=db(db.news.id==news_id).select(db.news.rating)
+	query=db((db.rating.news_id==news_id) & (db.rating.rater_id==auth.user_id)).select(db.rating.liked)
+	if(len(query)==0 or query[0].liked==0):
+		db(db.news.news_id==news_id).update(rating=ar[0].rating+5)
+		if(len(query==0)):
+			db.rating.insert(news_id=news_id,rater_id=auth.user_id,liked=1,disliked=0)
+		else:
+			db((db.rating.news_id==news_id) & (db.rating.rater_id==auth.user_id)).update(liked=1)
+	redirect(URL(r=request,f='first_page?query=%s' % catg))
+
+@auth.requires_login()
+def dislike():
+	news_id=int(request.args(0))
+	catg=int(request.args(1))
+	ar=db(db.news.id==news_id).select(db.news.rating)
+	query=db((db.rating.news_id==news_id) & (db.rating.rater_id==auth.user_id)).select(db.rating.disliked)
+	if(len(query)==0 or query[0].disliked==0):
+		db(db.news.news_id==news_id).update(rating=ar[0].rating-3)
+		if(len(query==0)):
+			db.rating.insert(news_id=news_id,rater_id=auth.user_id,liked=0,disliked=1)
+		else:
+			db((db.rating.news_id==news_id) & (db.rating.rater_id==auth.user_id)).update(disliked=1)
+	redirect(URL(r=request,f='first_page?query=%s' % catg))
+
+def t
+
+
+def user():
+    """
+    exposes:
+    http://..../[app]/default/user/login
+    http://..../[app]/default/user/logout
+    http://..../[app]/default/user/register
+    http://..../[app]/default/user/profile
+    http://..../[app]/default/user/retrieve_password
+    http://..../[app]/default/user/change_password
+    use @auth.requires_login()
+        @auth.requires_membership('group name')
+        @auth.requires_permission('read','table name',record_id)
+    to decorate functions that need access control
+    """
+    return dict(form=auth())
+
+
+def download():
+    """
+    allows downloading of uploaded files
+    http://..../[app]/default/download/[filename]
+    """
+    return response.download(request, db)
+
+
+def call():
+    """
+    exposes services. for example:
+    http://..../[app]/default/call/jsonrpc
+    decorate with @services.jsonrpc the functions to expose
+    supports xml, json, xmlrpc, jsonrpc, amfrpc, rss, csv
+    """
+    return service()
+
+
+@auth.requires_signature()
+def data():
+    """
+    http://..../[app]/default/data/tables
+    http://..../[app]/default/data/create/[table]
+    http://..../[app]/default/data/read/[table]/[id]
+    http://..../[app]/default/data/update/[table]/[id]
+    http://..../[app]/default/data/delete/[table]/[id]
+    http://..../[app]/default/data/select/[table]
+    http://..../[app]/default/data/search/[table]
+    but URLs must be signed, i.e. linked with
+      A('table',_href=URL('data/tables',user_signature=True))
+    or with the signed load operator
+      LOAD('default','data.load',args='tables',ajax=True,user_signature=True)
+    """
+    return dict(form=crud())
