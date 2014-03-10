@@ -1,0 +1,196 @@
+{{extend 'layout.html'}}
+<body>
+  
+    <div class="container-fluid">
+    	<div class="row-fluid">
+    		
+	    	<div class="span4">
+                
+                {{=IMG(_src=URL('download',args=personal[0]['image']),_class="img-rounded",_width='300px',_style='float:left')}}<br/><br/>
+                <br/>                
+    		</div>
+            <div class="span8" style="text-align:right">
+    			
+    			{{if (len(personal)!=0):}}
+                	<h1>{{=personal[0]['name'].title()}}</h1>
+
+                	<b>{{=personal[0]['email']}}<br/>
+                	{{=personal[0]['address1']}}<br/>
+	                {{=personal[0]['address2']}}<br/>
+	                
+    	            {{=personal[0]['address3']}}<br/>
+                	Contact No.: {{=personal[0]['contact']}}<br/>
+                	AGE &nbsp;:&nbsp; {{=personal[0]['age']}}<br/>
+                	
+                	DATE OF BIRTH&nbsp; :&nbsp; {{=personal[0]['dob']}}<br/>
+                	</b>	
+                	
+            	{{pass}}
+            	{{if (len(personal)==0):}}
+	   			 {{pass}}
+	    	</div>
+    		
+   		 </div>
+    	</div>
+        <hr/><br/>
+        
+        
+    <h3>EDUCATION:</h3>
+    
+    {{if (len(institutions)) :}}
+    
+    {{for x in institutions:}}
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>{{=x['title']}}</b><br/>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>{{=x['name']}}</b><br/><br/>
+    {{pass}}
+    {{pass}}
+<br/>
+    <button class="btn btn-primary"  onclick="window.location.href='{{=URL('edit_institution')}}'"><i class="icon-plus"></i>Insert</button>
+    
+    {{if (len(institutions)!=0):}}
+    <button class="btn btn-danger"  onclick="window.location.href='{{=URL('delete_institution')}}'"><i class="icon-minus"></i>Delete</button><br/><br/>
+    {{pass}}
+    <hr/><br/>
+    
+    <h3>WORK EXPERIENCE:</h3>
+    {{if len(work):}} 
+    {{for x in work:}}
+    	<b>{{=x['name']}}<br/>
+    	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>{{=x['type_of']}}</b><br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{=x['start_time']}}
+        {{if x.is_left=='Yes' :}}
+        	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IN PROGRESS
+        {{pass}}
+        {{if x.is_left=='No':}}
+        	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{=x['end_time']}}
+        {{pass}}
+    </b>
+    <br/>
+    {{pass}}
+    {{pass}}
+<br/>
+    <button class="btn btn-primary"  onclick="window.location.href='{{=URL('edit_work_expr')}}'"><i class="icon-plus"></i>Insert</button>
+    
+    {{if (len(work)!=0):}}
+    <button class="btn btn-danger"  onclick="window.location.href='{{=URL('delete_work_expr')}}'"><i class="icon-minus"></i>Delete</button><br/><br/>
+        {{pass}}
+    <br/><hr/><br/>
+    
+   
+    <h3>COURSES TAKEN:</h3>
+    
+    {{if (len(courses)) :}}
+    	{{for x in courses:}}
+    	<b>
+           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{=x['name']}}</b><br/>
+    {{pass}}
+    {{pass}}
+    <br/>
+    <button class="btn btn-primary" onclick="window.location.href='{{=URL('edit_course')}}'"><i class="icon-plus"></i>Insert</button>
+    {{if (len(courses)!=0):}}
+    <button class="btn btn-danger"  onclick="window.location.href='{{=URL('delete_course')}}'"><i class="icon-minus"></i>Delete</button><br/><br/>
+    {{pass}}
+    <br/>
+ 
+    <br/><hr/><br/>
+    
+<h3>PROJECTS DONE:</h3>
+    
+    {{if (len(projects)) :}}
+    	{{for x in projects:}}
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>{{=x['name']}}<br/>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{=x['detail']}}</b><br/>
+    {{pass}}<br/>
+    {{pass}}
+        
+    <br/>
+    <button class="btn btn-primary"  onclick="window.location.href='{{=URL('edit_project')}}'"><i class="icon-plus"></i>Insert</button>
+    
+    {{if (len(projects)!=0):}}
+    <button  class="btn btn-danger" onclick="window.location.href='{{=URL('delete_project')}}'"><i class="icon-minus"></i>Delete </button><br/><br/>
+    {{pass}}<br/><hr/><br/>
+    
+    
+    
+       
+    <h3>ACHIEVEMENTS:</h3>
+    <b>
+    {{if (len(activities)):}}
+    	{{for x in activities:}}
+        	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{=x['title']}}
+        	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{=x['detail']}}<br>
+    	{{pass}}
+    {{pass}}
+        <br/><br/></b>
+    <button class="btn btn-primary"  onclick="window.location.href='{{=URL('edit_activity')}}'"><i class="icon-plus"></i>Insert</button>
+    
+    {{if (len(activities)!=0):}}
+    <button class="btn btn-danger"  onclick="window.location.href='{{=URL('delete_activity')}}'"><i class="icon-minus"></i>Delete </button><br/><br/>
+    {{pass}}
+    
+    <br/><hr/>
+<br/>
+    
+    <h3>OTHERS:</h3>
+    <b>
+    {{if (len(extras)):}}
+        {{for x in extras:}}
+    		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{=x['title']}}
+    	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{=x['info']}}<br/>
+    	{{pass}}
+        {{pass}}</b>
+<br/><br/>
+        <button class="btn btn-primary"  onclick="window.location.href='{{=URL('edit_extra')}}'"><i class="icon-plus"></i>Insert</button>
+    
+    {{if (len(extras)!=0):}}
+    <button class="btn btn-danger"  onclick="window.location.href='{{=URL('delete_extra')}}'"><i class="icon-minus"></i>Delete </button><br/><br/>
+    {{pass}}
+<br/>
+       
+    <br/><hr/><br/>
+    
+    
+    <b>VIEW TEMPLATE:</b><br/><br/>
+   
+	   <form action="{{=URL('view_temp')}}" method="POST">
+		   <input type="radio" name="which_temp" value="1" />View 1&nbsp;&nbsp;&nbsp;
+		   <input type="radio" name="which_temp" value="2" /> View 2&nbsp;&nbsp;&nbsp;
+		   <input type="radio" name="which_temp" value="3" /> View 3&nbsp;&nbsp;&nbsp;
+		   <input class="btn btn-primary" type="submit" value="View" />
+	   </form>
+    <br/><hr/><br/> 
+
+   
+    <b>SELECT DEFAULT TEMPLATE:</b><br/><br/>
+   
+	   <form action="{{=URL('set_def_temp')}}" method="POST">
+		   <input type="radio" name="def_tmp" value="1" />View 1&nbsp;&nbsp;&nbsp;
+		   <input type="radio" name="def_tmp" value="2" /> View 2&nbsp;&nbsp;&nbsp;
+		   <input type="radio" name="def_tmp" value="3" /> View 3&nbsp;&nbsp;&nbsp;
+		   <input class="btn btn-primary" type="submit" value="Choose" />
+    </form><br/> <hr/><br/>
+  
+    
+    
+    <h3>YOUR COMMENTS:</h3>
+    
+    {{if len(coments) :}}
+    <b>
+    {{for x in coments:}}
+    BY :-&nbsp;{{=x.auth_user.first_name}}&nbsp;{{=x.auth_user.last_name}}<br/>
+    {{=x.coment.body}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        LIKES->{{=x.coment.likes}}&nbsp;&nbsp;&nbsp;
+        <button onclick="window.location.href='{{=URL('like_comment',args=[x.coment.id])}}'"><i class="icon-thumbs-up"></i></button><br/><br/>
+        {{pass}}</b>
+    {{pass}}
+    {{=form}}
+    {{if len(coments) :}}
+    <button onclick="window.location.href='{{=URL('delete_comment')}}'"><i class="icon-trash"></i>Delete Comment</button><br/><br/>
+    {{pass}}
+    
+    <br/>                
+    <button class="btn btn-primary"  onclick="window.location.href='{{=URL('send_message')}}'"><i class="icon-envelope"></i>Send Message</button>&nbsp;&nbsp;&nbsp;
+    <button onclick="window.location.href='{{=URL('view_message')}}'"><i class="icon-eye-open"></i>View Messages</button>&nbsp;&nbsp;&nbsp;
+    <button class="btn btn-primary"  onclick="window.location.href='{{=URL('mypdf',args=[personal[0].student_id])}}'">Download Resume</button><br/>  
+
+</body>

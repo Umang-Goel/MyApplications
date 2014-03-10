@@ -1,0 +1,80 @@
+{{extend 'layout.html'}}
+<h2>personal details are:</h2>
+{{if (len(personal)!=0):}}
+<h4>Name: {{=personal[0]['name']}}<br/>
+Age: {{=personal[0]['age']}}<br/>
+Gender: {{=personal[0]['gender']}}<br/>
+DOB: {{=personal[0]['dob']}}<br/>
+Address: {{=personal[0]['address']}}<br/>
+Ph. No.: {{=personal[0]['contact']}}<br/>
+Email: {{=personal[0]['email']}}<br/>
+High School % : {{=personal[0]['high_school_marks']}}<br/>
+12th % : {{=personal[0]['intermediate_marks']}}<br/>
+branch: {{=personal[0]['stream']}}<br/></h4>
+{{pass}}
+{{if (len(personal)==0):}}
+<h4>NO entries</h4>
+{{pass}}
+<br/>
+
+<h3>Courses undertaken are:</h3>
+{{if (len(courses)) :}}
+{{for x in courses:}}
+<h4> {{=x['name']}}<br/></h4>
+{{pass}}
+{{pass}}
+{{if (len(courses)==0):}}
+<h4>No Entries</h4>
+{{pass}}
+
+
+<h3>PROJECTS DONE</h3>
+{{if (len(projects)) :}}
+{{for x in projects:}}
+<h4>* PROJECT NAME : <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{=x['name']}}<br/>
+ &nbsp;&nbsp;PROJECT DETAILS:<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{=x['detail']}}</h4>
+{{pass}}
+{{pass}}
+{{if (len(projects)==0):}}
+<h4>No entries</h4>
+{{pass}}
+
+
+<h3><b>ACHIEVEMENT</b></h3>
+{{if (len(activities)):}}
+{{for x in activities:}}
+<h4>* {{=x['detail']}}</h4>
+{{pass}}
+{{pass}}
+{{if (len(activities)==0):}}
+<h4>No Entries</h4>
+{{pass}}
+
+
+<h3><b>OTHERS:</b></h3>
+{{if (len(extras)):}}
+{{for x in extras:}}
+<h4>* {{=x['info']}}</h4>
+{{pass}}
+{{pass}}
+{{if (len(extras)==0):}}
+<h4>No Entries</h4>
+{{pass}}
+
+<h3>Institutions are:</h3>
+{{if (len(institutions)) :}}
+{{for x in institutions:}}
+<h4>* {{=x['name']}}<br/></h4>
+{{pass}}
+{{pass}}
+{{if (len(institutions)==0):}}
+<h4>No Entries</h4>
+{{pass}}
+
+
+{{if len(coments) :}}
+<b><u>Comments :</u></b>
+{{for x in coments:}}
+<i>{{=x.coment.body}} </i>&nbsp;&nbsp;&nbsp;&nbsp;---------&nbsp;&nbsp;&nbsp;&nbsp;{{=x.coment_table.sender}}--------{{=x.coment_table.liked}}<br/>
+{{pass}}
+{{pass}}<br/><br/>

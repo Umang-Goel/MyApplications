@@ -1,0 +1,52 @@
+{{extend 'layout.html'}}
+<div style='text-align:center'><h1><a href="{{=basic[0].web_link}}">{{=basic[0].name.title()}}</a></h1></div>
+    <h2 style='color:brown'>About {{=basic[0].name}}</h2>
+<div style='font-size:20px;'>
+    	{{=basic[0].about.title()}}
+	</div>
+   
+<br/>
+<b>
+
+<h3>Vacancies</h3>
+{{if len(vacancies) :}}
+<table >
+    <tbody>
+    	{{for x in vacancies:}}
+    		<tr>
+                  <td>Post: {{=x.post_com.title()}}    	</td>
+        	</tr>
+        	{{for y in req:}}
+				{{for z in y:}}	
+					{{if int(z.vacancy_id)==int(x.id) :}}
+						<tr>
+                            <td></td>
+                            <td>{{=z.req_name.title()}}</td>
+                            <td>{{=z.req_det.title()}}</td>
+        				</tr>
+					{{pass}}
+					{{if z.vacancy_id!=x.id :}}						
+					{{pass}}
+        		{{pass}}
+        	{{pass}}
+        	
+        {{pass}}
+        
+    </tbody>
+</table>
+
+{{pass}}
+    
+    
+						
+
+
+
+
+
+
+        
+
+{{pass}}
+
+{{pass}}

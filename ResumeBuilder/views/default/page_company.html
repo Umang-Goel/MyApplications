@@ -1,0 +1,59 @@
+{{extend 'layout.html'}}
+<div style='text-align:center'><h1><a href="{{=basic[0].web_link}}">{{=basic[0].name.title()}}</a></h1></div>
+    <h2 style='color:brown'>About {{=basic[0].name}}</h2>
+<div style='font-size:20px;'>
+    	{{=basic[0].about.title()}}
+	</div>
+   
+<br/>
+<b>
+
+<h3>Vacancies</h3>
+{{if len(vacancies) :}}
+<table >
+    <tbody>
+    	{{for x in vacancies:}}
+    		<tr>
+                  <td>Post: {{=x.post_com.title()}}    	</td>
+        	</tr>
+        	{{for y in req:}}
+				{{for z in y:}}	
+					{{if int(z.vacancy_id)==int(x.id) :}}
+						<tr>
+                            <td></td>
+                            <td>{{=z.req_name.title()}}</td>
+                            <td>{{=z.req_det.title()}}</td>
+        				</tr>
+					{{pass}}
+					{{if z.vacancy_id!=x.id :}}						
+					{{pass}}
+        		{{pass}}
+        	{{pass}}
+        	<tr>
+               				 <td></td>
+                			<td><button class="btn btn-mini btn-primary" onclick="window.location.href='{{=URL('edit_requirements',args=[x.id])}}'"><i class="icon-plus"></i>&nbsp;Insert</button>&nbsp;&nbsp;
+             
+                <button class="btn btn-mini btn-danger" onclick="window.location.href='{{=URL('del_requirements',args=[x.id])}}'"><i class="icon-minus"></i>Delete</button></td>
+        	</tr>
+        {{pass}}
+        
+    </tbody>
+</table>
+<button class="btn btn-mini btn-primary" onclick="window.location.href='{{=URL('edit_vacancy',args=[x.id])}}'"><i class="icon-plus"></i>&nbsp;Insert Vacancy</button>&nbsp;&nbsp;
+             
+                <button class="btn btn-mini btn-danger" onclick="window.location.href='{{=URL('del_vacancy',args=[x.id])}}'"><i class="icon-minus"></i>Delete Vacancy</button>
+{{pass}}
+    
+    
+						
+
+
+
+
+
+
+        
+
+{{pass}}
+
+{{pass}}

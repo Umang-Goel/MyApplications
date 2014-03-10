@@ -1,0 +1,312 @@
+{{extend 'layout.html'}}
+<body>
+    <h2 style="font-family:Comic Sans MS">Personal details are:</h2>
+    <div class="container-fluid">
+    	<div class="row-fluid">
+    		<div class="span4">
+    			{{if (len(personal)!=0):}}
+                	<h2>{{=personal[0]['name'].title()}}</h2>
+
+                <h4>{{=personal[0]['email']}}<br/><br/>
+                {{=personal[0]['address1'].upper()}}<br/>
+                {{=personal[0]['address2'].upper()}}<br/>
+                {{=personal[0]['address3'].upper()}}<br/>
+                <h4>Contact No.: {{=personal[0]['contact']}}</h4><br/>
+                	
+            	{{pass}}
+            	{{if (len(personal)==0):}}
+	   				 {{pass}}
+	    	</div>
+	    	<div class="span4">
+    			{{if (len(personal)!=0):}}
+                	<b>AGE &nbsp;:&nbsp; {{=personal[0]['age']}}<br/>
+                	GENDER &nbsp;:&nbsp; {{=personal[0]['gender']}}<br/>
+                	DATE OF BIRTH&nbsp; :&nbsp; {{=personal[0]['dob']}}<br/>
+                        DEPARTMENT &nbsp;:&nbsp; {{=personal[0]['stream']}}<br/></b>
+                	
+            	{{pass}}
+            	{{if (len(personal)==0):}}
+	   				 {{pass}}
+	    	</div>
+    		<div class="span4">
+                {{=IMG(_src=URL('download',args=personal[0]['image']),_width='250px',_style='float:right')}}
+    		</div>
+    		
+   		 </div>
+	 </div>
+    	<button class="btn btn-primary"  onclick="window.location.href='{{=URL('update_age')}}'">Update Age</button>&nbsp;
+    	<button class="btn btn-primary"  onclick="window.location.href='{{=URL('update_contact')}}'">Update Contact</button>&nbsp;
+        <button class="btn btn-primary"  onclick="window.location.href='{{=URL('update_address')}}'">Update Address</button><br/>
+
+        <hr/><br/>
+    
+
+    
+    </p>
+    <b><i class="icon-globe"></i>INSTITUTIONS:</b>
+    
+    {{if (len(institutions)) :}}
+    
+    <table class="table table-bordered">
+    <thead>
+    <tr>
+        <col width="50">
+        <col width="200">
+        <th>#</th>
+    
+        <th>Type</th>
+        <th>Name</th>
+        <th>Grades</th>
+    </tr>    
+    </thead>
+    <tbody>
+    {{for x in institutions:}}
+    <tr class="success">
+        <th>*</th>
+        <td>{{=x['title'].title()}}</td>
+        <td>{{=x['name'].upper()}}</td>
+        <td>{{=x['grade']}}</td>
+    </tr>
+    {{pass}}
+        </tbody>
+    {{pass}}
+        </table>
+<br/><br/>
+    <button class="btn btn-primary"  onclick="window.location.href='{{=URL('edit_institution')}}'"><i class="icon-plus"></i>Insert</button>
+    
+    {{if (len(institutions)!=0):}}
+    <button class="btn btn-danger"  onclick="window.location.href='{{=URL('delete_institution')}}'"><i class="icon-minus"></i>Delete</button><br/><br/>
+    {{pass}}
+    <hr/><br/>
+    
+    <b> <i class="icon-briefcase"></i>WORK EXPERIENCE:</b>
+   
+    {{if len(work):}} 
+    <table class="table table-bordered">
+    <thead>
+    <tr>
+        <col width="10">
+        <col width="200">
+        <th>#</th>    
+        <th>COMPANY Name</th>
+        <th>TYPE</th>
+        <th>DATE OF JOINING</th>
+        <th>DATE OF LEAVING</th>
+        <th>CURRENTLY EMPLOYED</th>
+    </tr>    
+    </thead>
+    <tbody>
+    {{for x in work:}}
+    <tr class="success">
+        <th>*</th>
+        <td>{{=x['name'].title()}}</td>
+        <td>{{=x['type_of'].title()}}</td>
+        <td>{{=x['start_time']}}</td>
+        {{if x.is_left=='Yes' :}}
+        	<td>IN PROGRESS</td>
+        	<td>Yes</td>
+        {{pass}}
+        {{if x.is_left=='No':}}
+        	<td>{{=x['end_time']}}</td>
+        	<td>No</td>
+        {{pass}}
+    </tr>
+    {{pass}}
+        </tbody>
+    {{pass}}
+</table><br/>
+    <button class="btn btn-primary"  onclick="window.location.href='{{=URL('edit_work_expr')}}'"><i class="icon-plus"></i>Insert</button>
+    
+    {{if (len(work)!=0):}}
+    <button class="btn btn-danger"  onclick="window.location.href='{{=URL('delete_work_expr')}}'"><i class="icon-minus"></i>Delete</button><br/><br/>
+        {{pass}}
+    <br/><hr/><br/>
+    
+   
+    <div class="accordion-group1">
+    <div class="accordion-heading">
+    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
+        <b> <i class="icon-book"></i>COURSES TAKEN:</b>
+    </a>
+    </div>
+    <div id="collapseOne" class="accordion-body collapse">
+    <div class="accordion-inner">
+    {{if (len(courses)) :}}
+    {{for x in courses:}}
+    <h4> {{=x['name'].title()}}<br/></h4>
+    {{pass}}
+    {{pass}}
+    <button class="btn btn-primary" onclick="window.location.href='{{=URL('edit_course')}}'"><i class="icon-plus"></i>Insert</button>
+    {{if (len(courses)!=0):}}
+    <button class="btn btn-danger"  onclick="window.location.href='{{=URL('delete_course')}}'"><i class="icon-minus"></i>Delete</button><br/><br/>
+    {{pass}}
+    
+    </div>
+    </div>
+    </div>
+    <br/><hr/><br/>
+    
+<b><i class="icon-pencil"></i>PROJECTS DONE:</b><br/>
+    
+    {{if (len(projects)) :}}
+    <table class="table table-bordered">
+    <thead>
+    <tr class="warning">
+        <col width="50">
+        <col width="200">
+        <th>#</th>
+        <th>Project Name</th>
+        <th>Project Description</th>
+    </tr>    
+    </thead>
+     <tbody>
+    {{for x in projects:}}
+    <tr class="success">
+        <th>*</th>
+        <td>{{=x['name'].upper()}}</td>
+        <td><p class="text-info">{{=x['detail'].title()}}</p></td>
+    </tr>
+    {{pass}}
+     </tbody>
+    {{pass}}
+        </table>
+    <br/>
+    <button class="btn btn-primary"  onclick="window.location.href='{{=URL('edit_project')}}'"><i class="icon-plus"></i>Insert</button>
+    
+    {{if (len(projects)!=0):}}
+    <button  class="btn btn-danger" onclick="window.location.href='{{=URL('delete_project')}}'"><i class="icon-minus"></i>Delete </button><br/><br/>
+    {{pass}}<br/><hr/><br/>
+    
+    
+    
+       
+    <b>   <i class="icon-star"></i>ACHIEVEMENTS:</b>
+    {{if (len(activities)):}}
+    <table class="table table-bordered">
+    <thead>
+    <tr>
+        <col width="50">
+        <col width="200">
+        <th>#</th>
+    
+        <th>Activity Name</th>
+        <th>Activity Description</th>
+    </tr>    
+    </thead>
+     <tbody>
+    {{for x in activities:}}
+    <tr class="success">
+        <th>*</th>
+        <td>{{=x['title'].upper()}}</td>
+        <td>{{=x['detail'].title()}}</td>
+    </tr>
+    {{pass}}
+    </tbody>
+    {{pass}}
+    </table>
+<br/><br/>
+    <button class="btn btn-primary"  onclick="window.location.href='{{=URL('edit_activity')}}'"><i class="icon-plus"></i>Insert</button>
+    
+    {{if (len(activities)!=0):}}
+    <button class="btn btn-danger"  onclick="window.location.href='{{=URL('delete_activity')}}'"><i class="icon-minus"></i>Delete </button><br/><br/>
+    {{pass}}
+    
+    <br/><hr/>
+<br/>
+    
+    <b> <i class="icon-heart"></i>OTHERS:</b>
+    
+    {{if (len(extras)):}}
+    <table class="table table-bordered">
+    <thead>
+    <tr>
+        <col width="50">
+        <col width="200">
+        <th>#</th>
+    
+        <th>Name</th>
+        <th>Description</th>
+    </tr>    
+    </thead>
+     <tbody>
+    {{for x in extras:}}
+    <tr class="success">
+        <th>*</th>
+        <td>{{=x['title'].upper()}}</td>
+        <td>{{=x['info'].title()}}</td>
+    </tr>
+    {{pass}}
+    </tbody>
+    {{pass}}
+    </table>
+<br/><br/>
+        <button class="btn btn-primary"  onclick="window.location.href='{{=URL('edit_extra')}}'"><i class="icon-plus"></i>Insert</button>
+    
+    {{if (len(extras)!=0):}}
+    <button class="btn btn-danger"  onclick="window.location.href='{{=URL('delete_extra')}}'"><i class="icon-minus"></i>Delete </button><br/><br/>
+    {{pass}}
+<br/>
+       
+    <br/><hr/><br/>
+  
+   
+    <b>VIEW TEMPLATE:</b><br/><br/>
+   
+	   <form action="{{=URL('view_temp')}}" method="POST">
+		   <input type="radio" name="which_temp" value="1" />View 1&nbsp;&nbsp;&nbsp;
+		   <input type="radio" name="which_temp" value="2" /> View 2&nbsp;&nbsp;&nbsp;
+		   <input type="radio" name="which_temp" value="3" /> View 3&nbsp;&nbsp;&nbsp;
+		   <input class="btn btn-primary" type="submit" value="View" />
+	   </form>
+    <br/><hr/><br/> 
+
+   
+    <b>SELECT DEFAULT TEMPLATE:</b><br/><br/>
+   
+	   <form action="{{=URL('set_def_temp')}}" method="POST">
+		   <input type="radio" name="def_tmp" value="1" />View 1&nbsp;&nbsp;&nbsp;
+		   <input type="radio" name="def_tmp" value="2" /> View 2&nbsp;&nbsp;&nbsp;
+		   <input type="radio" name="def_tmp" value="3" /> View 3&nbsp;&nbsp;&nbsp;
+		   <input class="btn btn-primary" type="submit" value="Choose" />
+    </form><br/> <hr/><br/>
+    
+    <b><i class="icon-user"></i>YOUR COMMENTS:<br/></b>
+    
+    {{if len(coments) :}}
+    <table class="table table-bordered">
+    <thead>
+    <tr>
+        <col width="50">
+        <col width="200">
+        <col width="1000">
+        <th>#</th>
+        <th>Posted By</th>
+        <th>Comment</th>
+        <th>Likes</th>
+        <th>Like It</th>
+    </tr>    
+    </thead>
+     <tbody>
+    {{for x in coments:}}
+    <tr class="success">
+        <th>*</th>
+        <td>{{=x.auth_user.first_name.title()}}&nbsp;{{=x.auth_user.last_name.title()}}</td>
+        <td>{{=x.coment.body}}</td>
+        <td>{{=x.coment.likes}}</td>
+        <td><button onclick="window.location.href='{{=URL('like_comment',args=[x.coment.id])}}'"><i class="icon-thumbs-up"></i></button></td>
+	</tr>
+    {{pass}}
+</tbody>
+</table>
+    {{pass}}
+    {{=form}}
+    {{if len(coments) :}}
+    <button onclick="window.location.href='{{=URL('delete_comment')}}'"><i class="icon-trash"></i>Delete Comment</button><br/><br/>
+    {{pass}}
+    
+    <br/>                
+    <button class="btn btn-primary"  onclick="window.location.href='{{=URL('send_message')}}'"><i class="icon-envelope"></i>Send Message</button>&nbsp;&nbsp;&nbsp;
+    <button onclick="window.location.href='{{=URL('view_message')}}'"><i class="icon-eye-open"></i>View Messages</button>&nbsp;&nbsp;
+     <button class="btn btn-primary"  onclick="window.location.href='{{=URL('mypdf',args=[personal[0].student_id])}}'">Download Resume</button><br/>  
+
+</body>

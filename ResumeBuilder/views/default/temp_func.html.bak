@@ -1,0 +1,291 @@
+{{extend 'layout.html'}}
+<body> 
+    {{=IMG(_src=URL('download',args=personal[0]['image']),_width='175px',_class="img-circle",_style='float:right')}}
+    <h2 style="font-family:Comic Sans MS"><i>Personal details are:</i></h2>
+    <br/>
+    {{if (len(personal)!=0):}}
+    <h4 style="font-family:Comic Sans MS">Name: {{=personal[0]['name']}}<br/>
+    Age: {{=personal[0]['age']}}<br/>
+    Gender: {{=personal[0]['gender']}}<br/>
+    DOB: {{=personal[0]['dob']}}<br/>
+    Address: {{=personal[0]['address']}}<br/>
+    Ph. No.: {{=personal[0]['contact']}}<br/>
+    Email: {{=personal[0]['email']}}<br/>
+    High School % : {{=personal[0]['high_school_marks']}}<br/>
+    12th % : {{=personal[0]['intermediate_marks']}}<br/>
+    branch: {{=personal[0]['stream']}}<br/></h4>
+    {{pass}}
+    {{if (len(personal)==0):}}
+    {{pass}}
+    
+    <div class="accordion-group" id="accordion2">
+    <div class="accordion-group1">
+    <div class="accordion-heading">
+    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
+        COURSES TAKEN:
+    </a>
+    </div>
+    <div id="collapseOne" class="accordion-body collapse">
+    <div class="accordion-inner">
+    {{if (len(courses)) :}}
+    {{for x in courses:}}
+    <h4> {{=x['name']}}<br/></h4>
+    {{pass}}
+    {{pass}}
+    <button onclick="window.location.href='{{=URL('edit_course')}}'">Insert</button>
+    {{if (len(courses)!=0):}}
+    <button onclick="window.location.href='{{=URL('delete_course')}}'">Delete</button><br/><br/>
+    {{pass}}
+    
+    </div>
+    </div>
+    </div>
+    <br/>
+    <div class="accordion-group2">
+    <div class="accordion-heading">
+    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
+        PROJECTS DONE:
+    </a>
+    </div>
+    <div id="collapseTwo" class="accordion-body collapse">
+    <div class="accordion-inner">
+    {{if (len(projects)) :}}
+    <table class="table table-striped">
+    <thead>
+    <tr>
+        <col width="10">
+        <col width="200">
+        <th>#</th>
+    
+        <th>Project Name</th>
+        <th>Project Description</th>
+    </tr>    
+    </thead>
+     <tbody>
+    {{for x in projects:}}
+    <tr>
+        <th>*</th>
+        <td>{{=x['name']}}</td>
+        <td>{{=x['detail']}}</td>
+    </tr>
+    {{pass}}
+     </tbody>
+    {{pass}}
+        </table>
+    <button onclick="window.location.href='{{=URL('edit_project')}}'">Insert</button>
+    
+    {{if (len(projects)!=0):}}
+    <button onclick="window.location.href='{{=URL('delete_project')}}'">Delete </button><br/><br/>
+    {{pass}}
+    
+    
+    </div>
+    </div>
+    </div>
+        <br/>
+    <div class="accordion-group3">
+    <div class="accordion-heading">
+    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseThree">
+        ACHIEVEMENTS:
+    </a>
+    </div>
+    <div id="collapseThree" class="accordion-body collapse">
+    <div class="accordion-inner">
+    {{if (len(activities)):}}
+    <table class="table table-striped">
+    <thead>
+    <tr>
+        <col width="10">
+        <col width="200">
+        <th>#</th>
+    
+        <th>Activity Name</th>
+        <th>Activity Description</th>
+    </tr>    
+    </thead>
+     <tbody>
+    {{for x in activities:}}
+    <tr>
+        <th>*</th>
+        <td>{{=x['title']}}</td>
+        <td>{{=x['detail']}}</td>
+    </tr>
+    {{pass}}
+    </tbody>
+    {{pass}}
+    </table>
+    <button onclick="window.location.href='{{=URL('edit_activity')}}'">Insert</button>
+    
+    {{if (len(activities)!=0):}}
+    <button onclick="window.location.href='{{=URL('delete_activity')}}'">Delete </button><br/><br/>
+    {{pass}}
+    </div>
+    </div>
+    </div>
+        <br/>
+    <div class="accordion-group4">
+    <div class="accordion-heading">
+    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse4">
+        OTHERS:
+    </a>
+    </div>
+    <div id="collapse4" class="accordion-body collapse">
+    <div class="accordion-inner">
+    {{if (len(extras)):}}
+    <table class="table table-striped">
+    <thead>
+    <tr>
+        <col width="10">
+        <col width="200">
+        <th>#</th>
+    
+        <th>Name</th>
+        <th>Description</th>
+    </tr>    
+    </thead>
+     <tbody>
+    {{for x in extras:}}
+    <tr>
+        <th>*</th>
+        <td>{{=x['title']}}</td>
+        <td>{{=x['info']}}</td>
+    </tr>
+    {{pass}}
+    </tbody>
+    {{pass}}
+    </table>
+    <button onclick="window.location.href='{{=URL('edit_extra')}}'">Insert</button>
+    
+    {{if (len(extras)!=0):}}
+    <button onclick="window.location.href='{{=URL('delete_extra')}}'">Delete </button><br/><br/>
+    {{pass}}
+    </div>
+    </div>
+    </div>
+       
+        <br/>
+    <div class="accordion-group6">
+    <div class="accordion-heading">
+    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse5">
+        INSTITUTIONS:
+    </a>
+    </div>
+    <div id="collapse5" class="accordion-body collapse">
+    <div class="accordion-inner">
+    {{if (len(institutions)) :}}
+    
+    <table class="table table-striped">
+    <thead>
+    <tr>
+        <col width="10">
+        <col width="200">
+        <th>#</th>
+    
+        <th>Name</th>
+        <th>Description</th>
+    </tr>    
+    </thead>
+    <tbody>
+    {{for x in institutions:}}
+    <tr>
+        <th>*</th>
+        <td>{{=x['title']}}</td>
+        <td>{{=x['name']}}</td>
+    </tr>
+    {{pass}}
+        </tbody>
+    {{pass}}
+        </table>
+    <button onclick="window.location.href='{{=URL('edit_institution')}}'">Insert</button>
+    
+    {{if (len(institutions)!=0):}}
+    <button onclick="window.location.href='{{=URL('delete_institution')}}'">Delete</button><br/><br/>
+    {{pass}}
+    </div>
+    </div>
+    </div> 
+    
+        <br/>
+    <div class="accordion-group7">
+    <div class="accordion-heading">
+    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse6">
+        WORK EXPERIENCE:
+    </a>
+    </div>
+    <div id="collapse6" class="accordion-body collapse">
+    <div class="accordion-inner">
+    {{if len(work):}} 
+    <table class="table table-striped">
+    <thead>
+    <tr>
+        <col width="10">
+        <col width="200">
+        <th>#</th>    
+        <th>COMPANY Name</th>
+        <th>TYPE</th>
+        <th>DATE OF JOINING</th>
+        <th>DATE OF LEAVING</th>
+        <th>CURRENTLY EMPLOYED</th>
+    </tr>    
+    </thead>
+    <tbody>
+    {{for x in work:}}
+    <tr>
+        <th>*</th>
+        <td>{{=x['name']}}</td>
+        <td>{{=x['type_of']}}</td>
+        <td>{{=x['start_time']}}</td>
+        {{if x.is_left=='Yes' :}}
+        	<td>IN PROGRESS</td>
+        	<td>Yes</td>
+        {{pass}}
+        {{if x.is_left=='No':}}
+        	<td>{{=x['end_time']}}</td>
+        	<td>No</td>
+        {{pass}}
+    </tr>
+    {{pass}}
+        </tbody>
+    {{pass}}
+        </table>
+    <button onclick="window.location.href='{{=URL('edit_work_expr')}}'">Insert</button>
+    
+    {{if (len(work)!=0):}}
+    <button onclick="window.location.href='{{=URL('delete_work_expr')}}'">Delete</button><br/><br/>
+        {{pass}}
+    </div>
+    </div>
+    </div>
+        <br/>
+        
+        
+        
+        
+        
+    <div class="accordion-group6">
+    <div class="accordion-heading">
+    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse9">
+        YOUR COMMENTS:
+    </a>
+    </div>
+    <div id="collapse9" class="accordion-body collapse">
+    <div class="accordion-inner">
+    {{if len(coments) :}}
+    {{for x in coments:}}
+    <i>{{=x.coment.body}} </i>&nbsp;&nbsp;&nbsp;&nbsp;---------&nbsp;&nbsp;&nbsp;&nbsp;{{=x.auth_user.first_name}} {{=x.auth_user.last_name}}--------{{=x.coment.likes}}<br/>
+    {{pass}}
+    {{pass}}
+    {{=form}}
+    
+    {{if len(coments) :}}
+    <button onclick="window.location.href='{{=URL('delete_comment')}}'">Delete Comment</button><br/><br/>
+    {{pass}}
+    </div>
+    </div>
+    </div> 
+    </div>    
+    <br/>                
+    <button onclick="window.location.href='{{=URL('send_message')}}'">Send Message</button>&nbsp;&nbsp;&nbsp;
+    <button onclick="window.location.href='{{=URL('view_message')}}'">View Messages</button><br/><br/>
+
+</body>

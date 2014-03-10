@@ -1,0 +1,14 @@
+{{extend 'layout.html'}}
+{{if len(ar)==0 :}}
+<h3>No Messages</h3>
+{{pass}}
+{{if len(ar) :}}
+{{for x in ar :}}
+<h3>Message:</h3>
+<h4>{{=x.messages.body}}</h4>
+<h3>By:</h3>
+<h4>{{=x.auth_user.first_name}}</h4><br/>
+{{pass}}
+{{pass}}
+<br/><br/><br/>
+<button onclick="window.location.href='{{=URL('page_student')}}'">Back to Resume</button><br/><br/>

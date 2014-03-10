@@ -1,0 +1,302 @@
+{{extend 'layout.html'}}
+<body> 
+    {{=IMG(_src=URL('download',args=personal[0]['image']),_width='175px',_class="img-circle",_style='float:right')}}
+    <h2 style="font-family:Comic Sans MS"><i>Personal details are:</i></h2>
+    <br/>
+    {{if (len(personal)!=0):}}
+     <table size="90%">
+	    <tr><td>
+    		<table>
+    	    		<tr>
+				<td style="font-size:17px;"><big><b>Name:</b></big></td> 
+				<td style="font-size:20px;color:brown;" >{{=personal[0]['name']}}</td>
+		   	 </tr>
+		   	 <tr>
+				 <td style="font-size:17px"><big><b>Age:</b></big></td> 
+				 <td style="font-size:20px;color:brown">{{=personal[0]['age']}}</td>
+			    </tr>
+		   	 <tr>
+				 <td style="font-size:17px"><big><b>Gender:</b></big></td> 
+				 <td style="font-size:20px;color:brown">{{=personal[0]['gender']}}</td>
+			    </tr>
+			    <tr>
+				    <td style="font-size:17px"><big><b>DOB:</b></big></td> 
+				    <td style="font-size:20px;color:brown">{{=personal[0]['dob']}}</td>
+			    </tr>
+			    <tr>
+				    <td style="font-size:17px"><big><b>Email:</b></big></td> 
+				    <td style="font-size:20px;color:brown" >{{=personal[0]['email']}}</td>
+			    </tr>
+			    <tr>
+				    <td style="font-size:17px"><big><b>branch:</b></big></td> 
+				    <td style="font-size:20px;color:brown">{{=personal[0]['stream']}}</td>
+			    </tr>
+		    </table>
+	    </td>
+	    <td>
+	  	  <table style="float:right">
+			    <tr>
+				    <td style="text-align:right;font-size:17px;font-family:Comic Sans MS;"><big><b>Address:</b></big></td>
+				    <td style="text-align:right;font-size:20px;color:brown;">{{x=personal[0]['address'].split('\n')}}
+    					{{for y in x :}}
+					<i>{{=y}}</i><br/>
+					{{pass}}</td>
+			    </tr>
+			    <tr>
+				    <td style="text-align:right;font-size:17px;font-family:Comic Sans MS;"><big><b>Contact :</b></big></td> 
+				    <td style="font-size:20px;text-align:right;color:brown;">{{=personal[0]['contact']}}</td>
+			    </tr>
+		    </table>
+    	</td></tr>
+    </table>
+    {{pass}}
+    {{if (len(personal)==0):}}
+    {{pass}}
+    
+    <div class="accordion-group" id="accordion2">
+    <div class="accordion-group1">
+    <div class="accordion-heading">
+    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
+        COURSES TAKEN:
+    </a>
+    </div>
+    <div id="collapseOne" class="accordion-body collapse">
+    <div class="accordion-inner">
+    {{if (len(courses)) :}}
+    {{for x in courses:}}
+    <h4> {{=x['name']}}<br/></h4>
+    {{pass}}
+    {{pass}}
+    
+    
+    </div>
+    </div>
+    </div>
+    <br/>
+    <div class="accordion-group2">
+    <div class="accordion-heading">
+    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
+        PROJECTS DONE:
+    </a>
+    </div>
+    <div id="collapseTwo" class="accordion-body collapse">
+    <div class="accordion-inner">
+    {{if (len(projects)) :}}
+    <table class="table table-striped">
+    <thead>
+    <tr>
+        <col width="10">
+        <col width="200">
+        <th>#</th>
+    
+        <th>Project Name</th>
+        <th>Project Description</th>
+    </tr>    
+    </thead>
+     <tbody>
+    {{for x in projects:}}
+    <tr>
+        <th>*</th>
+        <td>{{=x['name']}}</td>
+        <td>{{=x['detail']}}</td>
+    </tr>
+    {{pass}}
+     </tbody>
+    {{pass}}
+        </table>
+    
+    
+    
+    
+    
+    </div>
+    </div>
+    </div>
+        <br/>
+    <div class="accordion-group3">
+    <div class="accordion-heading">
+    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseThree">
+        ACHIEVEMENTS:
+    </a>
+    </div>
+    <div id="collapseThree" class="accordion-body collapse">
+    <div class="accordion-inner">
+    {{if (len(activities)):}}
+    <table class="table table-striped">
+    <thead>
+    <tr>
+        <col width="10">
+        <col width="200">
+        <th>#</th>
+    
+        <th>Activity Name</th>
+        <th>Activity Description</th>
+    </tr>    
+    </thead>
+     <tbody>
+    {{for x in activities:}}
+    <tr>
+        <th>*</th>
+        <td>{{=x['title']}}</td>
+        <td>{{=x['detail']}}</td>
+    </tr>
+    {{pass}}
+    </tbody>
+    {{pass}}
+    </table>
+    
+    
+    </div>
+    </div>
+    </div>
+        <br/>
+    <div class="accordion-group4">
+    <div class="accordion-heading">
+    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse4">
+        OTHERS:
+    </a>
+    </div>
+    <div id="collapse4" class="accordion-body collapse">
+    <div class="accordion-inner">
+    {{if (len(extras)):}}
+    <table class="table table-striped">
+    <thead>
+    <tr>
+        <col width="10">
+        <col width="200">
+        <th>#</th>
+    
+        <th>Name</th>
+        <th>Description</th>
+    </tr>    
+    </thead>
+     <tbody>
+    {{for x in extras:}}
+    <tr>
+        <th>*</th>
+        <td>{{=x['title']}}</td>
+        <td>{{=x['info']}}</td>
+    </tr>
+    {{pass}}
+    </tbody>
+    {{pass}}
+    </table>
+    
+    </div>
+    </div>
+    </div>
+       
+        <br/>
+    <div class="accordion-group6">
+    <div class="accordion-heading">
+    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse5">
+        INSTITUTIONS:
+    </a>
+    </div>
+    <div id="collapse5" class="accordion-body collapse">
+    <div class="accordion-inner">
+    {{if (len(institutions)) :}}
+    
+    <table class="table table-striped">
+    <thead>
+    <tr>
+        <col width="10">
+        <col width="200">
+        <th>#</th>
+    
+        <th>Name</th>
+        <th>Description</th>
+    </tr>    
+    </thead>
+    <tbody>
+    {{for x in institutions:}}
+    <tr>
+        <th>*</th>
+        <td>{{=x['title']}}</td>
+        <td>{{=x['name']}}</td>
+    </tr>
+    {{pass}}
+        </tbody>
+    {{pass}}
+        </table>
+    
+    </div>
+    </div>
+    </div> 
+    
+        <br/>
+    <div class="accordion-group7">
+    <div class="accordion-heading">
+    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse6">
+        WORK EXPERIENCE:
+    </a>
+    </div>
+    <div id="collapse6" class="accordion-body collapse">
+    <div class="accordion-inner">
+    {{if len(work):}} 
+    <table class="table table-striped">
+    <thead>
+    <tr>
+        <col width="10">
+        <col width="200">
+        <th>#</th>    
+        <th>COMPANY Name</th>
+        <th>TYPE</th>
+        <th>DATE OF JOINING</th>
+        <th>DATE OF LEAVING</th>
+        <th>CURRENTLY EMPLOYED</th>
+    </tr>    
+    </thead>
+    <tbody>
+    {{for x in work:}}
+    <tr>
+        <th>*</th>
+        <td>{{=x['name']}}</td>
+        <td>{{=x['type_of']}}</td>
+        <td>{{=x['start_time']}}</td>
+        {{if x.is_left=='Yes' :}}
+        	<td>IN PROGRESS</td>
+        	<td>Yes</td>
+        {{pass}}
+        {{if x.is_left=='No':}}
+        	<td>{{=x['end_time']}}</td>
+        	<td>No</td>
+        {{pass}}
+    </tr>
+    {{pass}}
+        </tbody>
+    {{pass}}
+        </table>
+    
+    </div>
+    </div>
+    </div>
+        <br/>
+        
+        
+        
+        
+        
+    <div class="accordion-group6">
+    <div class="accordion-heading">
+    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse9">
+        YOUR COMMENTS:
+    </a>
+    </div>
+    <div id="collapse9" class="accordion-body collapse">
+    <div class="accordion-inner">
+    {{if len(coments) :}}
+    {{for x in coments:}}
+    <i>{{=x.coment.body}} </i>&nbsp;&nbsp;&nbsp;&nbsp;---------&nbsp;&nbsp;&nbsp;&nbsp;{{=x.auth_user.first_name}} {{=x.auth_user.last_name}}--------<i class="icon-thumbs-up"></i>{{=x.coment.likes}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <button onclick="window.location.href='{{=URL('like_comment',args=[x.coment.id])}}'"><i class="icon-thumbs-up"></i> Like</button><br/>
+    {{pass}}
+    {{pass}}
+    {{=form}}
+    
+    </div>
+    </div>
+    </div> 
+    </div>    
+    <br/><br/>                
+	<button class="btn btn-primary"  onclick="window.location.href='{{=URL('mypdf',args=[personal[0].student_id])}}'">Download Resume</button><br/>
+</body>

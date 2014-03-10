@@ -1,0 +1,323 @@
+timestamp: 2013-03-17T12:21:29.582000
+CREATE TABLE auth_user(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    first_name CHAR(128),
+    last_name CHAR(128),
+    email CHAR(512),
+    password CHAR(512),
+    registration_key CHAR(512),
+    reset_password_key CHAR(512),
+    registration_id CHAR(512)
+);
+success!
+timestamp: 2013-03-17T12:21:30.099000
+CREATE TABLE auth_group(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    role CHAR(512),
+    description TEXT
+);
+success!
+timestamp: 2013-03-17T12:21:30.293000
+CREATE TABLE auth_membership(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER REFERENCES auth_user (id) ON DELETE CASCADE,
+    group_id INTEGER REFERENCES auth_group (id) ON DELETE CASCADE
+);
+success!
+timestamp: 2013-03-17T12:21:30.406000
+CREATE TABLE auth_permission(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    group_id INTEGER REFERENCES auth_group (id) ON DELETE CASCADE,
+    name CHAR(512),
+    table_name CHAR(512),
+    record_id INTEGER
+);
+success!
+timestamp: 2013-03-17T12:21:30.555000
+CREATE TABLE auth_event(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    time_stamp TIMESTAMP,
+    client_ip CHAR(512),
+    user_id INTEGER REFERENCES auth_user (id) ON DELETE CASCADE,
+    origin CHAR(512),
+    description TEXT
+);
+success!
+timestamp: 2013-03-17T12:21:30.723000
+CREATE TABLE auth_cas(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER REFERENCES auth_user (id) ON DELETE CASCADE,
+    created_on TIMESTAMP,
+    service CHAR(512),
+    ticket CHAR(512),
+    renew CHAR(1)
+);
+success!
+timestamp: 2013-03-22T22:05:50.193000
+CREATE TABLE students(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    Name CHAR(512),
+    Age INTEGER
+);
+success!
+timestamp: 2013-03-22T22:22:01.804000
+ALTER TABLE students ADD stream CHAR(512);
+timestamp: 2013-03-22T22:22:01.913000
+ALTER TABLE students ADD dob TIMESTAMP;
+timestamp: 2013-03-22T22:22:01.988000
+ALTER TABLE students ADD gender CHAR(512);
+timestamp: 2013-03-22T22:22:02.070000
+ALTER TABLE students ADD cgpa DOUBLE;
+timestamp: 2013-03-22T22:22:02.203000
+ALTER TABLE students ADD institute CHAR(512);
+timestamp: 2013-03-22T22:22:02.277000
+ALTER TABLE students ADD contact CHAR(512);
+timestamp: 2013-03-22T22:22:02.369000
+ALTER TABLE students ADD address TEXT;
+timestamp: 2013-03-22T22:22:02.458000
+ALTER TABLE students ADD email CHAR(512);
+timestamp: 2013-03-22T23:12:24.206000
+CREATE TABLE student(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name CHAR(512),
+    age INTEGER,
+    gender CHAR(512),
+    dob TIMESTAMP,
+    address TEXT,
+    contact CHAR(512),
+    email CHAR(512),
+    institute CHAR(512),
+    cgpa DOUBLE,
+    stream CHAR(512)
+);
+success!
+timestamp: 2013-03-22T23:16:41.292000
+CREATE TABLE courses(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    student_id CHAR(512),
+    name CHAR(512)
+);
+success!
+timestamp: 2013-03-22T23:16:41.514000
+CREATE TABLE projects(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    student_id CHAR(512),
+    name CHAR(512),
+    detail TEXT
+);
+success!
+timestamp: 2013-03-22T23:17:03.798000
+CREATE TABLE extra(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    info TEXT
+);
+success!
+timestamp: 2013-03-22T23:17:03.949000
+CREATE TABLE activity(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    student_id CHAR(512),
+    detail TEXT
+);
+success!
+timestamp: 2013-03-23T00:36:20.321000
+CREATE TABLE course(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    student_id CHAR(512),
+    name CHAR(512)
+);
+success!
+timestamp: 2013-03-31T15:05:12.118000
+ALTER TABLE student ADD high_school_marks DOUBLE;
+timestamp: 2013-03-31T15:05:12.405000
+ALTER TABLE student ADD intermediate_marks DOUBLE;
+timestamp: 2013-03-31T15:05:12.597000
+CREATE TABLE student_table(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    student_id CHAR(512),
+    table_id CHAR(512)
+);
+success!
+timestamp: 2013-03-31T15:05:12.732000
+CREATE TABLE course_table(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    student_id CHAR(512),
+    table_id CHAR(512)
+);
+success!
+timestamp: 2013-03-31T15:05:12.881000
+CREATE TABLE project(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name CHAR(512),
+    detail TEXT
+);
+success!
+timestamp: 2013-03-31T15:05:13.060000
+CREATE TABLE project_table(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    student_id CHAR(512),
+    table_id CHAR(512)
+);
+success!
+timestamp: 2013-03-31T15:05:13.215000
+CREATE TABLE extra_table(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    student_id CHAR(512),
+    table_id CHAR(512)
+);
+success!
+timestamp: 2013-03-31T15:05:13.356000
+CREATE TABLE activity_table(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    student_id CHAR(512),
+    table_id CHAR(512)
+);
+success!
+timestamp: 2013-04-02T12:13:09.995000
+ALTER TABLE student ADD image CHAR(512);
+timestamp: 2013-04-04T21:39:18.044000
+ALTER TABLE extra ADD title CHAR(512);
+timestamp: 2013-04-04T21:39:18.176000
+ALTER TABLE activity ADD title CHAR(512);
+timestamp: 2013-04-04T23:54:25.698882
+CREATE TABLE image(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    student_id CHAR(512),
+    img CHAR(512)
+);
+success!
+timestamp: 2013-04-05T20:31:15.450676
+CREATE TABLE messages(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    receiver_id CHAR(512),
+    body TEXT
+);
+success!
+timestamp: 2013-04-05T20:31:15.645405
+CREATE TABLE message_table(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    student_id CHAR(512),
+    table_id CHAR(512)
+);
+success!
+timestamp: 2013-04-06T20:17:52.166528
+CREATE TABLE institution(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name CHAR(512)
+);
+success!
+timestamp: 2013-04-06T20:17:52.363444
+CREATE TABLE institution_table(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    table_id CHAR(512),
+    student_id CHAR(512)
+);
+success!
+timestamp: 2013-04-07T02:54:10.677958
+CREATE TABLE coment(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    body TEXT
+);
+success!
+timestamp: 2013-04-07T03:02:40.270364
+CREATE TABLE coment_table(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    sender_id CHAR(512),
+    table_id CHAR(512),
+    liked INTEGER,
+    receiver CHAR(512)
+);
+success!
+timestamp: 2013-04-07T23:17:28.609850
+ALTER TABLE institution ADD student_id CHAR(512);
+timestamp: 2013-04-07T23:29:32.390630
+ALTER TABLE messages ADD student_id CHAR(512);
+timestamp: 2013-04-07T23:37:34.094197
+ALTER TABLE coment ADD liked INTEGER;
+timestamp: 2013-04-07T23:37:34.258530
+ALTER TABLE coment ADD sender_id CHAR(512);
+timestamp: 2013-04-07T23:37:34.392953
+ALTER TABLE coment ADD likes INTEGER;
+timestamp: 2013-04-07T23:37:34.527637
+ALTER TABLE coment ADD receiver CHAR(512);
+timestamp: 2013-04-08T00:37:54.104905
+ALTER TABLE student ADD student_id CHAR(512);
+timestamp: 2013-04-08T00:43:36.854228
+ALTER TABLE project ADD student_id CHAR(512);
+timestamp: 2013-04-08T00:50:51.030526
+ALTER TABLE extra ADD student_id CHAR(512);
+timestamp: 2013-04-08T01:01:55.868544
+ALTER TABLE institution ADD title CHAR(512);
+timestamp: 2013-04-08T01:52:13.746695
+CREATE TABLE work_expr(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    student_id CHAR(512),
+    name CHAR(512),
+    type_of CHAR(512),
+    start_time TIMESTAMP,
+    end_time TIMESTAMP
+);
+success!
+timestamp: 2013-04-08T02:04:53.023736
+ALTER TABLE work_expr ADD is_left CHAR(512);
+timestamp: 2013-04-10T01:54:20.018880
+CREATE TABLE liked_comment(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id CHAR(512),
+    comment_id CHAR(512),
+    liked INTEGER
+);
+success!
+timestamp: 2013-04-10T01:56:02.805932
+ALTER TABLE work_expr ADD as_post CHAR(512);
+timestamp: 2013-04-10T19:12:33.135750
+CREATE TABLE company(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    company_id CHAR(512),
+    name CHAR(512),
+    about TEXT,
+    web_link CHAR(512)
+);
+success!
+timestamp: 2013-04-10T19:12:33.316355
+CREATE TABLE vacancy(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    company_id CHAR(512),
+    post_com CHAR(512)
+);
+success!
+timestamp: 2013-04-10T19:12:33.450995
+CREATE TABLE req_com(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    vacancy_id CHAR(512),
+    req_name CHAR(512),
+    req_det TEXT
+);
+success!
+timestamp: 2013-04-11T23:35:53.359219
+ALTER TABLE student ADD def_temp CHAR(512);
+timestamp: 2013-04-12T20:30:24.690778
+ALTER TABLE course ADD student_name CHAR(512);
+timestamp: 2013-04-12T20:30:24.855372
+ALTER TABLE project ADD student_name CHAR(512);
+timestamp: 2013-04-12T20:30:24.991619
+ALTER TABLE extra ADD student_name CHAR(512);
+timestamp: 2013-04-12T20:30:25.104781
+ALTER TABLE activity ADD student_name CHAR(512);
+timestamp: 2013-04-12T20:30:25.229567
+ALTER TABLE institution ADD student_name CHAR(512);
+timestamp: 2013-04-12T20:30:25.360348
+ALTER TABLE work_expr ADD student_name CHAR(512);
+timestamp: 2013-04-12T20:30:25.489962
+ALTER TABLE vacancy ADD company_name CHAR(512);
+timestamp: 2013-04-12T20:30:25.622821
+ALTER TABLE req_com ADD company_name CHAR(512);
+timestamp: 2013-04-14T11:37:23.893451
+ALTER TABLE institution ADD grade CHAR(512);
+timestamp: 2013-04-14T19:43:16.464366
+ALTER TABLE student ADD address3 TEXT;
+timestamp: 2013-04-14T19:43:16.598654
+ALTER TABLE student ADD address1 TEXT;
+timestamp: 2013-04-14T19:43:16.745492
+ALTER TABLE student ADD address2 TEXT;
+timestamp: 2013-04-15T00:35:31.943105
+ALTER TABLE req_com ADD company_id CHAR(512);
