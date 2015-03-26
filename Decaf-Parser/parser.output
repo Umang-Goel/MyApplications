@@ -1,0 +1,1702 @@
+Terminals unused in grammar
+
+   COMMENT
+
+
+Grammar
+
+    0 $accept: program $end
+
+    1 program: CLASS PROGRAM OPEN decl_list CLOSE
+
+    2 decl_list: /* empty */
+    3          | decl decl_list
+
+    4 decl: TYPE field_decl
+    5     | TYPE ID ROPEN arg_decl RCLOSE block
+    6     | VOID ID ROPEN arg_decl RCLOSE block
+
+    7 field_decl: ID COMMA field_decl
+    8           | ID SQOPEN INTLIT SQCLOSE COMMA field_decl
+    9           | ID END
+   10           | ID SQOPEN INTLIT SQCLOSE END
+
+   11 arg_decl: /* empty */
+   12         | TYPE ID
+   13         | arg_decl COMMA TYPE ID
+
+   14 block: OPEN block_field_decl statement CLOSE
+
+   15 block_field_decl: /* empty */
+   16                 | TYPE block_field_name block_field_decl
+
+   17 block_field_name: ID END
+   18                 | ID COMMA block_field_name
+
+   19 statement: /* empty */
+   20          | statement statement_decl
+
+   21 statement_decl: callout
+   22               | ID ASOP expr END
+   23               | ID SQOPEN expr SQCLOSE ASOP expr END
+   24               | ID method_call END
+   25               | IF ROPEN expr RCLOSE block else_opt
+   26               | FOR ID ASOP expr COMMA expr block
+   27               | RET expr_opt END
+   28               | BREAK END
+   29               | CONT END
+   30               | block
+
+   31 expr_opt: /* empty */
+   32         | expr
+
+   33 else_opt: /* empty */
+   34         | ELSE block
+
+   35 expr: ID
+   36     | ID SQOPEN expr SQCLOSE
+   37     | ID method_call
+   38     | callout
+   39     | expr PLUS expr
+   40     | expr MINUS expr
+   41     | expr MULT_DIV expr
+   42     | expr CONDOP expr
+   43     | expr RELOP expr
+   44     | expr EQOP expr
+   45     | NOTOP expr
+   46     | MINUS expr
+   47     | ROPEN expr RCLOSE
+   48     | literal
+
+   49 literal: INTLIT
+   50        | HEXLIT
+   51        | CHARLIT
+   52        | BOOLVAL
+
+   53 method_call: ROPEN method_opt RCLOSE
+
+   54 callout: CALLOUT ROPEN STRLIT callout_opt RCLOSE END
+
+   55 callout_opt: /* empty */
+   56            | callout_args
+
+   57 callout_args: COMMA callout_arg
+   58             | COMMA callout_arg callout_args
+
+   59 callout_arg: expr
+   60            | STRLIT
+
+   61 method_opt: /* empty */
+   62           | method_arg
+
+   63 method_arg: expr
+   64           | expr COMMA method_arg
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+error (256)
+ASOP (258) 22 23 26
+EQOP (259) 44
+RELOP (260) 43
+CONDOP (261) 42
+MINUS (262) 40 46
+PLUS (263) 39
+MULT_DIV (264) 41
+UMINUS (265)
+NOTOP (266) 45
+TYPE (267) 4 5 12 13 16
+VOID (268) 6
+ID (269) 5 6 7 8 9 10 12 13 17 18 22 23 24 26 35 36 37
+STRLIT (270) 54 60
+INTLIT (271) 8 10 49
+HEXLIT (272) 50
+CHARLIT (273) 51
+BOOLVAL (274) 52
+RET (275) 27
+BREAK (276) 28
+CONT (277) 29
+CLASS (278) 1
+OPEN (279) 1 14
+CLOSE (280) 1 14
+IF (281) 25
+ELSE (282) 34
+FOR (283) 26
+END (284) 9 10 17 22 23 24 27 28 29 54
+PROGRAM (285) 1
+COMMENT (286)
+COMMA (287) 7 8 13 18 26 57 58 64
+SQOPEN (288) 8 10 23 36
+SQCLOSE (289) 8 10 23 36
+ROPEN (290) 5 6 25 47 53 54
+RCLOSE (291) 5 6 25 47 53 54
+CALLOUT (292) 54
+
+
+Nonterminals, with rules where they appear
+
+$accept (38)
+    on left: 0
+program (39)
+    on left: 1, on right: 0
+decl_list (40)
+    on left: 2 3, on right: 1 3
+decl (41)
+    on left: 4 5 6, on right: 3
+field_decl (42)
+    on left: 7 8 9 10, on right: 4 7 8
+arg_decl (43)
+    on left: 11 12 13, on right: 5 6 13
+block (44)
+    on left: 14, on right: 5 6 25 26 30 34
+block_field_decl (45)
+    on left: 15 16, on right: 14 16
+block_field_name (46)
+    on left: 17 18, on right: 16 18
+statement (47)
+    on left: 19 20, on right: 14 20
+statement_decl (48)
+    on left: 21 22 23 24 25 26 27 28 29 30, on right: 20
+expr_opt (49)
+    on left: 31 32, on right: 27
+else_opt (50)
+    on left: 33 34, on right: 25
+expr (51)
+    on left: 35 36 37 38 39 40 41 42 43 44 45 46 47 48, on right: 22
+    23 25 26 32 36 39 40 41 42 43 44 45 46 47 59 63 64
+literal (52)
+    on left: 49 50 51 52, on right: 48
+method_call (53)
+    on left: 53, on right: 24 37
+callout (54)
+    on left: 54, on right: 21 38
+callout_opt (55)
+    on left: 55 56, on right: 54
+callout_args (56)
+    on left: 57 58, on right: 56 58
+callout_arg (57)
+    on left: 59 60, on right: 57 58
+method_opt (58)
+    on left: 61 62, on right: 53
+method_arg (59)
+    on left: 63 64, on right: 62 64
+
+
+State 0
+
+    0 $accept: . program $end
+
+    CLASS  shift, and go to state 1
+
+    program  go to state 2
+
+
+State 1
+
+    1 program: CLASS . PROGRAM OPEN decl_list CLOSE
+
+    PROGRAM  shift, and go to state 3
+
+
+State 2
+
+    0 $accept: program . $end
+
+    $end  shift, and go to state 4
+
+
+State 3
+
+    1 program: CLASS PROGRAM . OPEN decl_list CLOSE
+
+    OPEN  shift, and go to state 5
+
+
+State 4
+
+    0 $accept: program $end .
+
+    $default  accept
+
+
+State 5
+
+    1 program: CLASS PROGRAM OPEN . decl_list CLOSE
+
+    TYPE  shift, and go to state 6
+    VOID  shift, and go to state 7
+
+    $default  reduce using rule 2 (decl_list)
+
+    decl_list  go to state 8
+    decl       go to state 9
+
+
+State 6
+
+    4 decl: TYPE . field_decl
+    5     | TYPE . ID ROPEN arg_decl RCLOSE block
+
+    ID  shift, and go to state 10
+
+    field_decl  go to state 11
+
+
+State 7
+
+    6 decl: VOID . ID ROPEN arg_decl RCLOSE block
+
+    ID  shift, and go to state 12
+
+
+State 8
+
+    1 program: CLASS PROGRAM OPEN decl_list . CLOSE
+
+    CLOSE  shift, and go to state 13
+
+
+State 9
+
+    3 decl_list: decl . decl_list
+
+    TYPE  shift, and go to state 6
+    VOID  shift, and go to state 7
+
+    $default  reduce using rule 2 (decl_list)
+
+    decl_list  go to state 14
+    decl       go to state 9
+
+
+State 10
+
+    5 decl: TYPE ID . ROPEN arg_decl RCLOSE block
+    7 field_decl: ID . COMMA field_decl
+    8           | ID . SQOPEN INTLIT SQCLOSE COMMA field_decl
+    9           | ID . END
+   10           | ID . SQOPEN INTLIT SQCLOSE END
+
+    END     shift, and go to state 15
+    COMMA   shift, and go to state 16
+    SQOPEN  shift, and go to state 17
+    ROPEN   shift, and go to state 18
+
+
+State 11
+
+    4 decl: TYPE field_decl .
+
+    $default  reduce using rule 4 (decl)
+
+
+State 12
+
+    6 decl: VOID ID . ROPEN arg_decl RCLOSE block
+
+    ROPEN  shift, and go to state 19
+
+
+State 13
+
+    1 program: CLASS PROGRAM OPEN decl_list CLOSE .
+
+    $default  reduce using rule 1 (program)
+
+
+State 14
+
+    3 decl_list: decl decl_list .
+
+    $default  reduce using rule 3 (decl_list)
+
+
+State 15
+
+    9 field_decl: ID END .
+
+    $default  reduce using rule 9 (field_decl)
+
+
+State 16
+
+    7 field_decl: ID COMMA . field_decl
+
+    ID  shift, and go to state 20
+
+    field_decl  go to state 21
+
+
+State 17
+
+    8 field_decl: ID SQOPEN . INTLIT SQCLOSE COMMA field_decl
+   10           | ID SQOPEN . INTLIT SQCLOSE END
+
+    INTLIT  shift, and go to state 22
+
+
+State 18
+
+    5 decl: TYPE ID ROPEN . arg_decl RCLOSE block
+
+    TYPE  shift, and go to state 23
+
+    $default  reduce using rule 11 (arg_decl)
+
+    arg_decl  go to state 24
+
+
+State 19
+
+    6 decl: VOID ID ROPEN . arg_decl RCLOSE block
+
+    TYPE  shift, and go to state 23
+
+    $default  reduce using rule 11 (arg_decl)
+
+    arg_decl  go to state 25
+
+
+State 20
+
+    7 field_decl: ID . COMMA field_decl
+    8           | ID . SQOPEN INTLIT SQCLOSE COMMA field_decl
+    9           | ID . END
+   10           | ID . SQOPEN INTLIT SQCLOSE END
+
+    END     shift, and go to state 15
+    COMMA   shift, and go to state 16
+    SQOPEN  shift, and go to state 17
+
+
+State 21
+
+    7 field_decl: ID COMMA field_decl .
+
+    $default  reduce using rule 7 (field_decl)
+
+
+State 22
+
+    8 field_decl: ID SQOPEN INTLIT . SQCLOSE COMMA field_decl
+   10           | ID SQOPEN INTLIT . SQCLOSE END
+
+    SQCLOSE  shift, and go to state 26
+
+
+State 23
+
+   12 arg_decl: TYPE . ID
+
+    ID  shift, and go to state 27
+
+
+State 24
+
+    5 decl: TYPE ID ROPEN arg_decl . RCLOSE block
+   13 arg_decl: arg_decl . COMMA TYPE ID
+
+    COMMA   shift, and go to state 28
+    RCLOSE  shift, and go to state 29
+
+
+State 25
+
+    6 decl: VOID ID ROPEN arg_decl . RCLOSE block
+   13 arg_decl: arg_decl . COMMA TYPE ID
+
+    COMMA   shift, and go to state 28
+    RCLOSE  shift, and go to state 30
+
+
+State 26
+
+    8 field_decl: ID SQOPEN INTLIT SQCLOSE . COMMA field_decl
+   10           | ID SQOPEN INTLIT SQCLOSE . END
+
+    END    shift, and go to state 31
+    COMMA  shift, and go to state 32
+
+
+State 27
+
+   12 arg_decl: TYPE ID .
+
+    $default  reduce using rule 12 (arg_decl)
+
+
+State 28
+
+   13 arg_decl: arg_decl COMMA . TYPE ID
+
+    TYPE  shift, and go to state 33
+
+
+State 29
+
+    5 decl: TYPE ID ROPEN arg_decl RCLOSE . block
+
+    OPEN  shift, and go to state 34
+
+    block  go to state 35
+
+
+State 30
+
+    6 decl: VOID ID ROPEN arg_decl RCLOSE . block
+
+    OPEN  shift, and go to state 34
+
+    block  go to state 36
+
+
+State 31
+
+   10 field_decl: ID SQOPEN INTLIT SQCLOSE END .
+
+    $default  reduce using rule 10 (field_decl)
+
+
+State 32
+
+    8 field_decl: ID SQOPEN INTLIT SQCLOSE COMMA . field_decl
+
+    ID  shift, and go to state 20
+
+    field_decl  go to state 37
+
+
+State 33
+
+   13 arg_decl: arg_decl COMMA TYPE . ID
+
+    ID  shift, and go to state 38
+
+
+State 34
+
+   14 block: OPEN . block_field_decl statement CLOSE
+
+    TYPE  shift, and go to state 39
+
+    $default  reduce using rule 15 (block_field_decl)
+
+    block_field_decl  go to state 40
+
+
+State 35
+
+    5 decl: TYPE ID ROPEN arg_decl RCLOSE block .
+
+    $default  reduce using rule 5 (decl)
+
+
+State 36
+
+    6 decl: VOID ID ROPEN arg_decl RCLOSE block .
+
+    $default  reduce using rule 6 (decl)
+
+
+State 37
+
+    8 field_decl: ID SQOPEN INTLIT SQCLOSE COMMA field_decl .
+
+    $default  reduce using rule 8 (field_decl)
+
+
+State 38
+
+   13 arg_decl: arg_decl COMMA TYPE ID .
+
+    $default  reduce using rule 13 (arg_decl)
+
+
+State 39
+
+   16 block_field_decl: TYPE . block_field_name block_field_decl
+
+    ID  shift, and go to state 41
+
+    block_field_name  go to state 42
+
+
+State 40
+
+   14 block: OPEN block_field_decl . statement CLOSE
+
+    $default  reduce using rule 19 (statement)
+
+    statement  go to state 43
+
+
+State 41
+
+   17 block_field_name: ID . END
+   18                 | ID . COMMA block_field_name
+
+    END    shift, and go to state 44
+    COMMA  shift, and go to state 45
+
+
+State 42
+
+   16 block_field_decl: TYPE block_field_name . block_field_decl
+
+    TYPE  shift, and go to state 39
+
+    $default  reduce using rule 15 (block_field_decl)
+
+    block_field_decl  go to state 46
+
+
+State 43
+
+   14 block: OPEN block_field_decl statement . CLOSE
+   20 statement: statement . statement_decl
+
+    ID       shift, and go to state 47
+    RET      shift, and go to state 48
+    BREAK    shift, and go to state 49
+    CONT     shift, and go to state 50
+    OPEN     shift, and go to state 34
+    CLOSE    shift, and go to state 51
+    IF       shift, and go to state 52
+    FOR      shift, and go to state 53
+    CALLOUT  shift, and go to state 54
+
+    block           go to state 55
+    statement_decl  go to state 56
+    callout         go to state 57
+
+
+State 44
+
+   17 block_field_name: ID END .
+
+    $default  reduce using rule 17 (block_field_name)
+
+
+State 45
+
+   18 block_field_name: ID COMMA . block_field_name
+
+    ID  shift, and go to state 41
+
+    block_field_name  go to state 58
+
+
+State 46
+
+   16 block_field_decl: TYPE block_field_name block_field_decl .
+
+    $default  reduce using rule 16 (block_field_decl)
+
+
+State 47
+
+   22 statement_decl: ID . ASOP expr END
+   23               | ID . SQOPEN expr SQCLOSE ASOP expr END
+   24               | ID . method_call END
+
+    ASOP    shift, and go to state 59
+    SQOPEN  shift, and go to state 60
+    ROPEN   shift, and go to state 61
+
+    method_call  go to state 62
+
+
+State 48
+
+   27 statement_decl: RET . expr_opt END
+
+    MINUS    shift, and go to state 63
+    NOTOP    shift, and go to state 64
+    ID       shift, and go to state 65
+    INTLIT   shift, and go to state 66
+    HEXLIT   shift, and go to state 67
+    CHARLIT  shift, and go to state 68
+    BOOLVAL  shift, and go to state 69
+    ROPEN    shift, and go to state 70
+    CALLOUT  shift, and go to state 54
+
+    $default  reduce using rule 31 (expr_opt)
+
+    expr_opt  go to state 71
+    expr      go to state 72
+    literal   go to state 73
+    callout   go to state 74
+
+
+State 49
+
+   28 statement_decl: BREAK . END
+
+    END  shift, and go to state 75
+
+
+State 50
+
+   29 statement_decl: CONT . END
+
+    END  shift, and go to state 76
+
+
+State 51
+
+   14 block: OPEN block_field_decl statement CLOSE .
+
+    $default  reduce using rule 14 (block)
+
+
+State 52
+
+   25 statement_decl: IF . ROPEN expr RCLOSE block else_opt
+
+    ROPEN  shift, and go to state 77
+
+
+State 53
+
+   26 statement_decl: FOR . ID ASOP expr COMMA expr block
+
+    ID  shift, and go to state 78
+
+
+State 54
+
+   54 callout: CALLOUT . ROPEN STRLIT callout_opt RCLOSE END
+
+    ROPEN  shift, and go to state 79
+
+
+State 55
+
+   30 statement_decl: block .
+
+    $default  reduce using rule 30 (statement_decl)
+
+
+State 56
+
+   20 statement: statement statement_decl .
+
+    $default  reduce using rule 20 (statement)
+
+
+State 57
+
+   21 statement_decl: callout .
+
+    $default  reduce using rule 21 (statement_decl)
+
+
+State 58
+
+   18 block_field_name: ID COMMA block_field_name .
+
+    $default  reduce using rule 18 (block_field_name)
+
+
+State 59
+
+   22 statement_decl: ID ASOP . expr END
+
+    MINUS    shift, and go to state 63
+    NOTOP    shift, and go to state 64
+    ID       shift, and go to state 65
+    INTLIT   shift, and go to state 66
+    HEXLIT   shift, and go to state 67
+    CHARLIT  shift, and go to state 68
+    BOOLVAL  shift, and go to state 69
+    ROPEN    shift, and go to state 70
+    CALLOUT  shift, and go to state 54
+
+    expr     go to state 80
+    literal  go to state 73
+    callout  go to state 74
+
+
+State 60
+
+   23 statement_decl: ID SQOPEN . expr SQCLOSE ASOP expr END
+
+    MINUS    shift, and go to state 63
+    NOTOP    shift, and go to state 64
+    ID       shift, and go to state 65
+    INTLIT   shift, and go to state 66
+    HEXLIT   shift, and go to state 67
+    CHARLIT  shift, and go to state 68
+    BOOLVAL  shift, and go to state 69
+    ROPEN    shift, and go to state 70
+    CALLOUT  shift, and go to state 54
+
+    expr     go to state 81
+    literal  go to state 73
+    callout  go to state 74
+
+
+State 61
+
+   53 method_call: ROPEN . method_opt RCLOSE
+
+    MINUS    shift, and go to state 63
+    NOTOP    shift, and go to state 64
+    ID       shift, and go to state 65
+    INTLIT   shift, and go to state 66
+    HEXLIT   shift, and go to state 67
+    CHARLIT  shift, and go to state 68
+    BOOLVAL  shift, and go to state 69
+    ROPEN    shift, and go to state 70
+    CALLOUT  shift, and go to state 54
+
+    $default  reduce using rule 61 (method_opt)
+
+    expr        go to state 82
+    literal     go to state 73
+    callout     go to state 74
+    method_opt  go to state 83
+    method_arg  go to state 84
+
+
+State 62
+
+   24 statement_decl: ID method_call . END
+
+    END  shift, and go to state 85
+
+
+State 63
+
+   46 expr: MINUS . expr
+
+    MINUS    shift, and go to state 63
+    NOTOP    shift, and go to state 64
+    ID       shift, and go to state 65
+    INTLIT   shift, and go to state 66
+    HEXLIT   shift, and go to state 67
+    CHARLIT  shift, and go to state 68
+    BOOLVAL  shift, and go to state 69
+    ROPEN    shift, and go to state 70
+    CALLOUT  shift, and go to state 54
+
+    expr     go to state 86
+    literal  go to state 73
+    callout  go to state 74
+
+
+State 64
+
+   45 expr: NOTOP . expr
+
+    MINUS    shift, and go to state 63
+    NOTOP    shift, and go to state 64
+    ID       shift, and go to state 65
+    INTLIT   shift, and go to state 66
+    HEXLIT   shift, and go to state 67
+    CHARLIT  shift, and go to state 68
+    BOOLVAL  shift, and go to state 69
+    ROPEN    shift, and go to state 70
+    CALLOUT  shift, and go to state 54
+
+    expr     go to state 87
+    literal  go to state 73
+    callout  go to state 74
+
+
+State 65
+
+   35 expr: ID .
+   36     | ID . SQOPEN expr SQCLOSE
+   37     | ID . method_call
+
+    SQOPEN  shift, and go to state 88
+    ROPEN   shift, and go to state 61
+
+    $default  reduce using rule 35 (expr)
+
+    method_call  go to state 89
+
+
+State 66
+
+   49 literal: INTLIT .
+
+    $default  reduce using rule 49 (literal)
+
+
+State 67
+
+   50 literal: HEXLIT .
+
+    $default  reduce using rule 50 (literal)
+
+
+State 68
+
+   51 literal: CHARLIT .
+
+    $default  reduce using rule 51 (literal)
+
+
+State 69
+
+   52 literal: BOOLVAL .
+
+    $default  reduce using rule 52 (literal)
+
+
+State 70
+
+   47 expr: ROPEN . expr RCLOSE
+
+    MINUS    shift, and go to state 63
+    NOTOP    shift, and go to state 64
+    ID       shift, and go to state 65
+    INTLIT   shift, and go to state 66
+    HEXLIT   shift, and go to state 67
+    CHARLIT  shift, and go to state 68
+    BOOLVAL  shift, and go to state 69
+    ROPEN    shift, and go to state 70
+    CALLOUT  shift, and go to state 54
+
+    expr     go to state 90
+    literal  go to state 73
+    callout  go to state 74
+
+
+State 71
+
+   27 statement_decl: RET expr_opt . END
+
+    END  shift, and go to state 91
+
+
+State 72
+
+   32 expr_opt: expr .
+   39 expr: expr . PLUS expr
+   40     | expr . MINUS expr
+   41     | expr . MULT_DIV expr
+   42     | expr . CONDOP expr
+   43     | expr . RELOP expr
+   44     | expr . EQOP expr
+
+    EQOP      shift, and go to state 92
+    RELOP     shift, and go to state 93
+    CONDOP    shift, and go to state 94
+    MINUS     shift, and go to state 95
+    PLUS      shift, and go to state 96
+    MULT_DIV  shift, and go to state 97
+
+    $default  reduce using rule 32 (expr_opt)
+
+
+State 73
+
+   48 expr: literal .
+
+    $default  reduce using rule 48 (expr)
+
+
+State 74
+
+   38 expr: callout .
+
+    $default  reduce using rule 38 (expr)
+
+
+State 75
+
+   28 statement_decl: BREAK END .
+
+    $default  reduce using rule 28 (statement_decl)
+
+
+State 76
+
+   29 statement_decl: CONT END .
+
+    $default  reduce using rule 29 (statement_decl)
+
+
+State 77
+
+   25 statement_decl: IF ROPEN . expr RCLOSE block else_opt
+
+    MINUS    shift, and go to state 63
+    NOTOP    shift, and go to state 64
+    ID       shift, and go to state 65
+    INTLIT   shift, and go to state 66
+    HEXLIT   shift, and go to state 67
+    CHARLIT  shift, and go to state 68
+    BOOLVAL  shift, and go to state 69
+    ROPEN    shift, and go to state 70
+    CALLOUT  shift, and go to state 54
+
+    expr     go to state 98
+    literal  go to state 73
+    callout  go to state 74
+
+
+State 78
+
+   26 statement_decl: FOR ID . ASOP expr COMMA expr block
+
+    ASOP  shift, and go to state 99
+
+
+State 79
+
+   54 callout: CALLOUT ROPEN . STRLIT callout_opt RCLOSE END
+
+    STRLIT  shift, and go to state 100
+
+
+State 80
+
+   22 statement_decl: ID ASOP expr . END
+   39 expr: expr . PLUS expr
+   40     | expr . MINUS expr
+   41     | expr . MULT_DIV expr
+   42     | expr . CONDOP expr
+   43     | expr . RELOP expr
+   44     | expr . EQOP expr
+
+    EQOP      shift, and go to state 92
+    RELOP     shift, and go to state 93
+    CONDOP    shift, and go to state 94
+    MINUS     shift, and go to state 95
+    PLUS      shift, and go to state 96
+    MULT_DIV  shift, and go to state 97
+    END       shift, and go to state 101
+
+
+State 81
+
+   23 statement_decl: ID SQOPEN expr . SQCLOSE ASOP expr END
+   39 expr: expr . PLUS expr
+   40     | expr . MINUS expr
+   41     | expr . MULT_DIV expr
+   42     | expr . CONDOP expr
+   43     | expr . RELOP expr
+   44     | expr . EQOP expr
+
+    EQOP      shift, and go to state 92
+    RELOP     shift, and go to state 93
+    CONDOP    shift, and go to state 94
+    MINUS     shift, and go to state 95
+    PLUS      shift, and go to state 96
+    MULT_DIV  shift, and go to state 97
+    SQCLOSE   shift, and go to state 102
+
+
+State 82
+
+   39 expr: expr . PLUS expr
+   40     | expr . MINUS expr
+   41     | expr . MULT_DIV expr
+   42     | expr . CONDOP expr
+   43     | expr . RELOP expr
+   44     | expr . EQOP expr
+   63 method_arg: expr .
+   64           | expr . COMMA method_arg
+
+    EQOP      shift, and go to state 92
+    RELOP     shift, and go to state 93
+    CONDOP    shift, and go to state 94
+    MINUS     shift, and go to state 95
+    PLUS      shift, and go to state 96
+    MULT_DIV  shift, and go to state 97
+    COMMA     shift, and go to state 103
+
+    $default  reduce using rule 63 (method_arg)
+
+
+State 83
+
+   53 method_call: ROPEN method_opt . RCLOSE
+
+    RCLOSE  shift, and go to state 104
+
+
+State 84
+
+   62 method_opt: method_arg .
+
+    $default  reduce using rule 62 (method_opt)
+
+
+State 85
+
+   24 statement_decl: ID method_call END .
+
+    $default  reduce using rule 24 (statement_decl)
+
+
+State 86
+
+   39 expr: expr . PLUS expr
+   40     | expr . MINUS expr
+   41     | expr . MULT_DIV expr
+   42     | expr . CONDOP expr
+   43     | expr . RELOP expr
+   44     | expr . EQOP expr
+   46     | MINUS expr .
+
+    $default  reduce using rule 46 (expr)
+
+
+State 87
+
+   39 expr: expr . PLUS expr
+   40     | expr . MINUS expr
+   41     | expr . MULT_DIV expr
+   42     | expr . CONDOP expr
+   43     | expr . RELOP expr
+   44     | expr . EQOP expr
+   45     | NOTOP expr .
+
+    $default  reduce using rule 45 (expr)
+
+
+State 88
+
+   36 expr: ID SQOPEN . expr SQCLOSE
+
+    MINUS    shift, and go to state 63
+    NOTOP    shift, and go to state 64
+    ID       shift, and go to state 65
+    INTLIT   shift, and go to state 66
+    HEXLIT   shift, and go to state 67
+    CHARLIT  shift, and go to state 68
+    BOOLVAL  shift, and go to state 69
+    ROPEN    shift, and go to state 70
+    CALLOUT  shift, and go to state 54
+
+    expr     go to state 105
+    literal  go to state 73
+    callout  go to state 74
+
+
+State 89
+
+   37 expr: ID method_call .
+
+    $default  reduce using rule 37 (expr)
+
+
+State 90
+
+   39 expr: expr . PLUS expr
+   40     | expr . MINUS expr
+   41     | expr . MULT_DIV expr
+   42     | expr . CONDOP expr
+   43     | expr . RELOP expr
+   44     | expr . EQOP expr
+   47     | ROPEN expr . RCLOSE
+
+    EQOP      shift, and go to state 92
+    RELOP     shift, and go to state 93
+    CONDOP    shift, and go to state 94
+    MINUS     shift, and go to state 95
+    PLUS      shift, and go to state 96
+    MULT_DIV  shift, and go to state 97
+    RCLOSE    shift, and go to state 106
+
+
+State 91
+
+   27 statement_decl: RET expr_opt END .
+
+    $default  reduce using rule 27 (statement_decl)
+
+
+State 92
+
+   44 expr: expr EQOP . expr
+
+    MINUS    shift, and go to state 63
+    NOTOP    shift, and go to state 64
+    ID       shift, and go to state 65
+    INTLIT   shift, and go to state 66
+    HEXLIT   shift, and go to state 67
+    CHARLIT  shift, and go to state 68
+    BOOLVAL  shift, and go to state 69
+    ROPEN    shift, and go to state 70
+    CALLOUT  shift, and go to state 54
+
+    expr     go to state 107
+    literal  go to state 73
+    callout  go to state 74
+
+
+State 93
+
+   43 expr: expr RELOP . expr
+
+    MINUS    shift, and go to state 63
+    NOTOP    shift, and go to state 64
+    ID       shift, and go to state 65
+    INTLIT   shift, and go to state 66
+    HEXLIT   shift, and go to state 67
+    CHARLIT  shift, and go to state 68
+    BOOLVAL  shift, and go to state 69
+    ROPEN    shift, and go to state 70
+    CALLOUT  shift, and go to state 54
+
+    expr     go to state 108
+    literal  go to state 73
+    callout  go to state 74
+
+
+State 94
+
+   42 expr: expr CONDOP . expr
+
+    MINUS    shift, and go to state 63
+    NOTOP    shift, and go to state 64
+    ID       shift, and go to state 65
+    INTLIT   shift, and go to state 66
+    HEXLIT   shift, and go to state 67
+    CHARLIT  shift, and go to state 68
+    BOOLVAL  shift, and go to state 69
+    ROPEN    shift, and go to state 70
+    CALLOUT  shift, and go to state 54
+
+    expr     go to state 109
+    literal  go to state 73
+    callout  go to state 74
+
+
+State 95
+
+   40 expr: expr MINUS . expr
+
+    MINUS    shift, and go to state 63
+    NOTOP    shift, and go to state 64
+    ID       shift, and go to state 65
+    INTLIT   shift, and go to state 66
+    HEXLIT   shift, and go to state 67
+    CHARLIT  shift, and go to state 68
+    BOOLVAL  shift, and go to state 69
+    ROPEN    shift, and go to state 70
+    CALLOUT  shift, and go to state 54
+
+    expr     go to state 110
+    literal  go to state 73
+    callout  go to state 74
+
+
+State 96
+
+   39 expr: expr PLUS . expr
+
+    MINUS    shift, and go to state 63
+    NOTOP    shift, and go to state 64
+    ID       shift, and go to state 65
+    INTLIT   shift, and go to state 66
+    HEXLIT   shift, and go to state 67
+    CHARLIT  shift, and go to state 68
+    BOOLVAL  shift, and go to state 69
+    ROPEN    shift, and go to state 70
+    CALLOUT  shift, and go to state 54
+
+    expr     go to state 111
+    literal  go to state 73
+    callout  go to state 74
+
+
+State 97
+
+   41 expr: expr MULT_DIV . expr
+
+    MINUS    shift, and go to state 63
+    NOTOP    shift, and go to state 64
+    ID       shift, and go to state 65
+    INTLIT   shift, and go to state 66
+    HEXLIT   shift, and go to state 67
+    CHARLIT  shift, and go to state 68
+    BOOLVAL  shift, and go to state 69
+    ROPEN    shift, and go to state 70
+    CALLOUT  shift, and go to state 54
+
+    expr     go to state 112
+    literal  go to state 73
+    callout  go to state 74
+
+
+State 98
+
+   25 statement_decl: IF ROPEN expr . RCLOSE block else_opt
+   39 expr: expr . PLUS expr
+   40     | expr . MINUS expr
+   41     | expr . MULT_DIV expr
+   42     | expr . CONDOP expr
+   43     | expr . RELOP expr
+   44     | expr . EQOP expr
+
+    EQOP      shift, and go to state 92
+    RELOP     shift, and go to state 93
+    CONDOP    shift, and go to state 94
+    MINUS     shift, and go to state 95
+    PLUS      shift, and go to state 96
+    MULT_DIV  shift, and go to state 97
+    RCLOSE    shift, and go to state 113
+
+
+State 99
+
+   26 statement_decl: FOR ID ASOP . expr COMMA expr block
+
+    MINUS    shift, and go to state 63
+    NOTOP    shift, and go to state 64
+    ID       shift, and go to state 65
+    INTLIT   shift, and go to state 66
+    HEXLIT   shift, and go to state 67
+    CHARLIT  shift, and go to state 68
+    BOOLVAL  shift, and go to state 69
+    ROPEN    shift, and go to state 70
+    CALLOUT  shift, and go to state 54
+
+    expr     go to state 114
+    literal  go to state 73
+    callout  go to state 74
+
+
+State 100
+
+   54 callout: CALLOUT ROPEN STRLIT . callout_opt RCLOSE END
+
+    COMMA  shift, and go to state 115
+
+    $default  reduce using rule 55 (callout_opt)
+
+    callout_opt   go to state 116
+    callout_args  go to state 117
+
+
+State 101
+
+   22 statement_decl: ID ASOP expr END .
+
+    $default  reduce using rule 22 (statement_decl)
+
+
+State 102
+
+   23 statement_decl: ID SQOPEN expr SQCLOSE . ASOP expr END
+
+    ASOP  shift, and go to state 118
+
+
+State 103
+
+   64 method_arg: expr COMMA . method_arg
+
+    MINUS    shift, and go to state 63
+    NOTOP    shift, and go to state 64
+    ID       shift, and go to state 65
+    INTLIT   shift, and go to state 66
+    HEXLIT   shift, and go to state 67
+    CHARLIT  shift, and go to state 68
+    BOOLVAL  shift, and go to state 69
+    ROPEN    shift, and go to state 70
+    CALLOUT  shift, and go to state 54
+
+    expr        go to state 82
+    literal     go to state 73
+    callout     go to state 74
+    method_arg  go to state 119
+
+
+State 104
+
+   53 method_call: ROPEN method_opt RCLOSE .
+
+    $default  reduce using rule 53 (method_call)
+
+
+State 105
+
+   36 expr: ID SQOPEN expr . SQCLOSE
+   39     | expr . PLUS expr
+   40     | expr . MINUS expr
+   41     | expr . MULT_DIV expr
+   42     | expr . CONDOP expr
+   43     | expr . RELOP expr
+   44     | expr . EQOP expr
+
+    EQOP      shift, and go to state 92
+    RELOP     shift, and go to state 93
+    CONDOP    shift, and go to state 94
+    MINUS     shift, and go to state 95
+    PLUS      shift, and go to state 96
+    MULT_DIV  shift, and go to state 97
+    SQCLOSE   shift, and go to state 120
+
+
+State 106
+
+   47 expr: ROPEN expr RCLOSE .
+
+    $default  reduce using rule 47 (expr)
+
+
+State 107
+
+   39 expr: expr . PLUS expr
+   40     | expr . MINUS expr
+   41     | expr . MULT_DIV expr
+   42     | expr . CONDOP expr
+   43     | expr . RELOP expr
+   44     | expr . EQOP expr
+   44     | expr EQOP expr .
+
+    MINUS     shift, and go to state 95
+    PLUS      shift, and go to state 96
+    MULT_DIV  shift, and go to state 97
+
+    $default  reduce using rule 44 (expr)
+
+
+State 108
+
+   39 expr: expr . PLUS expr
+   40     | expr . MINUS expr
+   41     | expr . MULT_DIV expr
+   42     | expr . CONDOP expr
+   43     | expr . RELOP expr
+   43     | expr RELOP expr .
+   44     | expr . EQOP expr
+
+    MINUS     shift, and go to state 95
+    PLUS      shift, and go to state 96
+    MULT_DIV  shift, and go to state 97
+
+    $default  reduce using rule 43 (expr)
+
+
+State 109
+
+   39 expr: expr . PLUS expr
+   40     | expr . MINUS expr
+   41     | expr . MULT_DIV expr
+   42     | expr . CONDOP expr
+   42     | expr CONDOP expr .
+   43     | expr . RELOP expr
+   44     | expr . EQOP expr
+
+    MINUS     shift, and go to state 95
+    PLUS      shift, and go to state 96
+    MULT_DIV  shift, and go to state 97
+
+    $default  reduce using rule 42 (expr)
+
+
+State 110
+
+   39 expr: expr . PLUS expr
+   40     | expr . MINUS expr
+   40     | expr MINUS expr .
+   41     | expr . MULT_DIV expr
+   42     | expr . CONDOP expr
+   43     | expr . RELOP expr
+   44     | expr . EQOP expr
+
+    MULT_DIV  shift, and go to state 97
+
+    $default  reduce using rule 40 (expr)
+
+
+State 111
+
+   39 expr: expr . PLUS expr
+   39     | expr PLUS expr .
+   40     | expr . MINUS expr
+   41     | expr . MULT_DIV expr
+   42     | expr . CONDOP expr
+   43     | expr . RELOP expr
+   44     | expr . EQOP expr
+
+    MULT_DIV  shift, and go to state 97
+
+    $default  reduce using rule 39 (expr)
+
+
+State 112
+
+   39 expr: expr . PLUS expr
+   40     | expr . MINUS expr
+   41     | expr . MULT_DIV expr
+   41     | expr MULT_DIV expr .
+   42     | expr . CONDOP expr
+   43     | expr . RELOP expr
+   44     | expr . EQOP expr
+
+    $default  reduce using rule 41 (expr)
+
+
+State 113
+
+   25 statement_decl: IF ROPEN expr RCLOSE . block else_opt
+
+    OPEN  shift, and go to state 34
+
+    block  go to state 121
+
+
+State 114
+
+   26 statement_decl: FOR ID ASOP expr . COMMA expr block
+   39 expr: expr . PLUS expr
+   40     | expr . MINUS expr
+   41     | expr . MULT_DIV expr
+   42     | expr . CONDOP expr
+   43     | expr . RELOP expr
+   44     | expr . EQOP expr
+
+    EQOP      shift, and go to state 92
+    RELOP     shift, and go to state 93
+    CONDOP    shift, and go to state 94
+    MINUS     shift, and go to state 95
+    PLUS      shift, and go to state 96
+    MULT_DIV  shift, and go to state 97
+    COMMA     shift, and go to state 122
+
+
+State 115
+
+   57 callout_args: COMMA . callout_arg
+   58             | COMMA . callout_arg callout_args
+
+    MINUS    shift, and go to state 63
+    NOTOP    shift, and go to state 64
+    ID       shift, and go to state 65
+    STRLIT   shift, and go to state 123
+    INTLIT   shift, and go to state 66
+    HEXLIT   shift, and go to state 67
+    CHARLIT  shift, and go to state 68
+    BOOLVAL  shift, and go to state 69
+    ROPEN    shift, and go to state 70
+    CALLOUT  shift, and go to state 54
+
+    expr         go to state 124
+    literal      go to state 73
+    callout      go to state 74
+    callout_arg  go to state 125
+
+
+State 116
+
+   54 callout: CALLOUT ROPEN STRLIT callout_opt . RCLOSE END
+
+    RCLOSE  shift, and go to state 126
+
+
+State 117
+
+   56 callout_opt: callout_args .
+
+    $default  reduce using rule 56 (callout_opt)
+
+
+State 118
+
+   23 statement_decl: ID SQOPEN expr SQCLOSE ASOP . expr END
+
+    MINUS    shift, and go to state 63
+    NOTOP    shift, and go to state 64
+    ID       shift, and go to state 65
+    INTLIT   shift, and go to state 66
+    HEXLIT   shift, and go to state 67
+    CHARLIT  shift, and go to state 68
+    BOOLVAL  shift, and go to state 69
+    ROPEN    shift, and go to state 70
+    CALLOUT  shift, and go to state 54
+
+    expr     go to state 127
+    literal  go to state 73
+    callout  go to state 74
+
+
+State 119
+
+   64 method_arg: expr COMMA method_arg .
+
+    $default  reduce using rule 64 (method_arg)
+
+
+State 120
+
+   36 expr: ID SQOPEN expr SQCLOSE .
+
+    $default  reduce using rule 36 (expr)
+
+
+State 121
+
+   25 statement_decl: IF ROPEN expr RCLOSE block . else_opt
+
+    ELSE  shift, and go to state 128
+
+    $default  reduce using rule 33 (else_opt)
+
+    else_opt  go to state 129
+
+
+State 122
+
+   26 statement_decl: FOR ID ASOP expr COMMA . expr block
+
+    MINUS    shift, and go to state 63
+    NOTOP    shift, and go to state 64
+    ID       shift, and go to state 65
+    INTLIT   shift, and go to state 66
+    HEXLIT   shift, and go to state 67
+    CHARLIT  shift, and go to state 68
+    BOOLVAL  shift, and go to state 69
+    ROPEN    shift, and go to state 70
+    CALLOUT  shift, and go to state 54
+
+    expr     go to state 130
+    literal  go to state 73
+    callout  go to state 74
+
+
+State 123
+
+   60 callout_arg: STRLIT .
+
+    $default  reduce using rule 60 (callout_arg)
+
+
+State 124
+
+   39 expr: expr . PLUS expr
+   40     | expr . MINUS expr
+   41     | expr . MULT_DIV expr
+   42     | expr . CONDOP expr
+   43     | expr . RELOP expr
+   44     | expr . EQOP expr
+   59 callout_arg: expr .
+
+    EQOP      shift, and go to state 92
+    RELOP     shift, and go to state 93
+    CONDOP    shift, and go to state 94
+    MINUS     shift, and go to state 95
+    PLUS      shift, and go to state 96
+    MULT_DIV  shift, and go to state 97
+
+    $default  reduce using rule 59 (callout_arg)
+
+
+State 125
+
+   57 callout_args: COMMA callout_arg .
+   58             | COMMA callout_arg . callout_args
+
+    COMMA  shift, and go to state 115
+
+    $default  reduce using rule 57 (callout_args)
+
+    callout_args  go to state 131
+
+
+State 126
+
+   54 callout: CALLOUT ROPEN STRLIT callout_opt RCLOSE . END
+
+    END  shift, and go to state 132
+
+
+State 127
+
+   23 statement_decl: ID SQOPEN expr SQCLOSE ASOP expr . END
+   39 expr: expr . PLUS expr
+   40     | expr . MINUS expr
+   41     | expr . MULT_DIV expr
+   42     | expr . CONDOP expr
+   43     | expr . RELOP expr
+   44     | expr . EQOP expr
+
+    EQOP      shift, and go to state 92
+    RELOP     shift, and go to state 93
+    CONDOP    shift, and go to state 94
+    MINUS     shift, and go to state 95
+    PLUS      shift, and go to state 96
+    MULT_DIV  shift, and go to state 97
+    END       shift, and go to state 133
+
+
+State 128
+
+   34 else_opt: ELSE . block
+
+    OPEN  shift, and go to state 34
+
+    block  go to state 134
+
+
+State 129
+
+   25 statement_decl: IF ROPEN expr RCLOSE block else_opt .
+
+    $default  reduce using rule 25 (statement_decl)
+
+
+State 130
+
+   26 statement_decl: FOR ID ASOP expr COMMA expr . block
+   39 expr: expr . PLUS expr
+   40     | expr . MINUS expr
+   41     | expr . MULT_DIV expr
+   42     | expr . CONDOP expr
+   43     | expr . RELOP expr
+   44     | expr . EQOP expr
+
+    EQOP      shift, and go to state 92
+    RELOP     shift, and go to state 93
+    CONDOP    shift, and go to state 94
+    MINUS     shift, and go to state 95
+    PLUS      shift, and go to state 96
+    MULT_DIV  shift, and go to state 97
+    OPEN      shift, and go to state 34
+
+    block  go to state 135
+
+
+State 131
+
+   58 callout_args: COMMA callout_arg callout_args .
+
+    $default  reduce using rule 58 (callout_args)
+
+
+State 132
+
+   54 callout: CALLOUT ROPEN STRLIT callout_opt RCLOSE END .
+
+    $default  reduce using rule 54 (callout)
+
+
+State 133
+
+   23 statement_decl: ID SQOPEN expr SQCLOSE ASOP expr END .
+
+    $default  reduce using rule 23 (statement_decl)
+
+
+State 134
+
+   34 else_opt: ELSE block .
+
+    $default  reduce using rule 34 (else_opt)
+
+
+State 135
+
+   26 statement_decl: FOR ID ASOP expr COMMA expr block .
+
+    $default  reduce using rule 26 (statement_decl)

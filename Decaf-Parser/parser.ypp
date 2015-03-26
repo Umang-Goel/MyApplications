@@ -1,0 +1,321 @@
+%{
+#include <bits/stdc++.h>
+#include "AST.h"
+using namespace std;
+
+int yylex();
+int yyerror(const char *p) { cerr << "Error!" << endl; }
+
+%}
+
+%union {
+    vector<ASTDecl*> *decl_list;
+    ASTProgram *program;
+    ASTDecl *decl;
+    vector<ASTVar*> *field_decl;
+    vector< pair<string, string> > *arg_decl;
+    ASTBlock *block;
+    ASTVarDecl *block_field_decl;
+    vector<ASTVar1*> *block_field_name;
+    vector<ASTStatement*> *statement;
+    ASTStatement *statement_decl;
+    ASTExpr* expr;
+    ASTLiteral* literal;
+    vector<ASTExpr*> *method_call;
+    ASTMethodCall2 *callout;
+    vector<ASTCalloutArgs*> *callout_args;
+    ASTCalloutArgs *callout_arg;
+
+    string *str;
+};
+
+%left ASOP
+%left CONDOP RELOP EQOP
+%left PLUS MINUS
+%left MULT_DIV
+%left UMINUS
+%left NOTOP
+
+%type <program> program
+%type <decl_list> decl_list
+%type <decl> decl
+%type <field_decl> field_decl
+%type <arg_decl> arg_decl
+%type <block> block
+%type <block_field_decl> block_field_decl
+%type <block_field_name> block_field_name
+%type <statement> statement
+%type <statement_decl> statement_decl
+%type <expr> expr
+%type <literal> literal
+%type <block> else_opt
+%type <expr> expr_opt
+%type <method_call> method_call
+%type <method_call> method_opt
+%type <method_call> method_arg
+%type <callout> callout
+%type <callout_args> callout_args
+%type <callout_arg> callout_arg
+%type <callout_args> callout_opt
+
+%token <str> TYPE VOID PLUS MINUS MULT_DIV CONDOP EQOP RELOP ASOP NOTOP ID STRLIT
+%token <str> INTLIT HEXLIT
+%token <str> CHARLIT
+%token <str> BOOLVAL
+%token RET BREAK CONT CLASS OPEN CLOSE IF ELSE FOR END PROGRAM COMMENT COMMA SQOPEN SQCLOSE ROPEN RCLOSE CALLOUT
+
+%%
+program : CLASS PROGRAM OPEN decl_list CLOSE
+{
+    $$ = new ASTProgram($4);
+    $$->print_ast(0);
+}
+
+
+decl_list : {$$ = new vector<ASTDecl*>;}
+| decl decl_list 
+{
+    $$ = $2;
+    $$->push_back($1);
+}
+
+
+decl : TYPE field_decl
+{
+    vector<ASTVar*> vars = *$2;
+    vector< pair<string*, ASTVar*> > *var_list = new vector< pair<string*, ASTVar*> >;
+
+    for (int i = 0; i < vars.size(); ++i)
+    {
+        var_list->push_back(make_pair($1, vars[i]));
+    }
+
+    $$ = new ASTVarDecl(var_list);
+}
+| TYPE ID ROPEN arg_decl RCLOSE block
+{
+    $$ = new ASTMethodDecl($1, $2, $4, $6);
+}
+| VOID ID ROPEN arg_decl RCLOSE block
+{
+    $$ = new ASTMethodDecl($1, $2, $4, $6); 
+}
+
+
+field_decl : ID COMMA field_decl
+{
+    $$ = $3;
+    ASTVar *var = new ASTVar1($1);
+    $$->push_back(var);
+}
+| ID SQOPEN INTLIT SQCLOSE COMMA field_decl
+{
+    $$ = $6;
+    ASTVar *var = new ASTVar2($1, $3);
+    $$->push_back(var);
+}
+| ID END
+{
+    $$ = new vector<ASTVar*>;
+    ASTVar *var = new ASTVar1($1);
+    $$->push_back(var);
+}
+| ID SQOPEN INTLIT SQCLOSE END
+{
+    $$ = new vector<ASTVar*>;
+    ASTVar *var = new ASTVar2($1, $3);
+    $$->push_back(var);
+}
+
+
+arg_decl : { $$ = new vector< pair<string, string> >; }
+| TYPE ID 
+{ 
+    $$ = new vector< pair<string, string> >;
+    $$->push_back(make_pair(*$1, *$2));
+}
+| arg_decl COMMA TYPE ID
+{
+    $$ = $1;
+    $$->push_back(make_pair(*$3, *$4));
+}
+
+block : OPEN block_field_decl statement CLOSE
+{
+    $$ = new ASTBlock($2, $3); 
+}
+
+block_field_decl : { $$ = NULL;}
+| TYPE block_field_name block_field_decl
+{
+    $$ = $3;
+    
+    if ($$ == NULL)
+    {
+        $$ = new ASTVarDecl();
+    }
+    vector<ASTVar1*> vars = *$2;
+    for (int i = 0; i < vars.size(); ++i)
+    {
+        $$->add_vars(make_pair($1, vars[i]));
+    }
+}
+
+block_field_name : ID END 
+{ 
+    $$ = new vector<ASTVar1*>;
+    ASTVar1 *var = new ASTVar1($1);
+    $$->push_back(var);
+}
+| ID COMMA block_field_name
+{
+    $$ = $3;
+    ASTVar1 *var = new ASTVar1($1);
+    $$->push_back(var);
+}
+
+
+statement : { $$ = new vector<ASTStatement*>; }
+| statement statement_decl
+{
+    $$ = $1;
+    $$->push_back($2);
+}
+
+statement_decl : callout
+{
+    $$ = $1;
+}
+| ID ASOP expr END
+{
+    ASTLocation *loc = new ASTLocation1($1);
+    string op_ = *$2;
+    if(op_.compare("+=") == 0 || op_.compare("-=") == 0 || op_.compare("*=") == 0 || op_.compare("/=") == 0)
+    {
+        string *new_op = new string("");
+	*new_op += op_[0];
+	string other_op = "";
+	other_op += op_[1];
+	ASTExpr *new_expr =  new ASTBinopExpr(loc,new_op,$3);
+    	$$ = new ASTAssignment(loc, new_expr);
+    }
+    else
+    {
+   	$$ = new ASTAssignment(loc, $3);
+    }
+}
+| ID SQOPEN expr SQCLOSE ASOP expr END
+{
+    ASTLocation *loc = new ASTLocation2($1, $3);
+    $$ = new ASTAssignment(loc, $6);
+}
+| ID method_call END
+{
+    $$ = new ASTMethodCall1($1, $2);
+}
+| IF ROPEN expr RCLOSE block else_opt
+{
+    $$ = new ASTIf($3, $5, $6);
+}
+| FOR ID ASOP expr COMMA expr block
+{
+    $$ = new ASTFor($2, $4, $6, $7);
+}
+| RET expr_opt END
+{
+    $$ = new ASTReturn($2);
+}
+| BREAK END 
+{
+    $$ = new ASTBreak();
+}
+| CONT END 
+{
+    $$ = new ASTContinue();
+}
+| block
+{
+    $$ = $1;
+}
+
+expr_opt : { $$ = NULL; }
+| expr { $$ = $1; }
+
+else_opt : { $$ = NULL; }
+| ELSE block { $$ = $2; }
+
+expr : ID { $$ = new ASTLocation1($1); }
+| ID SQOPEN expr SQCLOSE { $$ = new ASTLocation2($1, $3); }
+| ID method_call { $$ = new ASTMethodCall1($1, $2); }
+| callout { $$ = $1; }
+| expr PLUS expr { $$ = new ASTBinopExpr($1, $2, $3); }
+| expr MINUS expr { $$ = new ASTBinopExpr($1, $2, $3); }
+| expr MULT_DIV expr { $$ = new ASTBinopExpr($1, $2, $3); }
+| expr CONDOP expr { $$ = new ASTBinopExpr($1, $2, $3); }
+| expr RELOP expr { $$ = new ASTBinopExpr($1, $2, $3); }
+| expr EQOP expr { $$ = new ASTBinopExpr($1, $2, $3); }
+| NOTOP expr { $$ = new ASTUnaryExpr($2, $1); }
+| MINUS expr %prec UMINUS
+{ $$ = new ASTUnaryExpr($2, $1); }
+| ROPEN expr RCLOSE { $$ = $2; }
+| literal { $$ = $1; }
+
+literal : INTLIT { $$ = new ASTLiteralInt($1); }
+| HEXLIT { $$ = new ASTLiteralInt($1); }
+| CHARLIT { $$ = new ASTLiteralChar($1); }
+| BOOLVAL { $$ = new ASTLiteralBool($1); }
+
+method_call : ROPEN method_opt RCLOSE
+{
+    $$ = $2;
+}
+
+callout : CALLOUT ROPEN STRLIT callout_opt RCLOSE END
+{
+    $$ = new ASTMethodCall2($3, $4);
+}
+
+callout_opt : { $$ = new vector<ASTCalloutArgs*>; }
+| callout_args
+{
+    $$ = $1;
+}
+
+callout_args : COMMA callout_arg
+{
+    $$ = new vector<ASTCalloutArgs*>;
+    $$->push_back($2);
+}
+| COMMA callout_arg callout_args
+{
+    $$ = $3;
+    $$->push_back($2);
+}
+
+callout_arg : expr { $$ = new ASTCalloutArgs1($1); }
+| STRLIT { $$ = new ASTCalloutArgs2($1); }
+
+method_opt : { $$ = new vector<ASTExpr*>; }
+| method_arg
+{
+    $$ = $1;
+}
+
+method_arg : expr 
+{ 
+    $$ = new vector<ASTExpr*>;
+    $$->push_back($1);
+}
+| expr COMMA method_arg
+{
+    $$ = $3;
+    $$->push_back($1);
+}
+
+%%
+int main()
+{
+    yyparse();
+    
+    return 0;
+}

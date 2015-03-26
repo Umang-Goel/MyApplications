@@ -1,0 +1,45 @@
+class Program
+{
+    int i, j;
+    int arr[100];
+    
+    void foo(int a, int b)
+    {
+        main();
+    }
+
+    // Some comment
+    int main(int argc)
+    {
+        int a, b;
+        int c;
+        // int arr[100];
+        b = 1;
+        a[2] = b;
+        
+        for a = 10, a < 100
+        {
+            if (a > 20)
+            {
+                return 0;
+            }
+            else
+            {
+                continue;
+                a += b;
+            }
+        }
+    }
+    
+    int too(int c)
+    {
+    	main();
+    }
+
+    void fun()
+    {
+        foo(a, b);
+        a = !b;
+        c = -(a+b);
+    }
+}
